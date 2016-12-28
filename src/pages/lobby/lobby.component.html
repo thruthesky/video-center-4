@@ -13,7 +13,7 @@
               <i class="fa fa-circle fa-stack-2x"></i>
               <i class="fa fa-cog fa-stack-1x fa-inverse"></i>
             </span>
-            <span class="fa-stack fa-lg float-xs-right" (click)="chatDisplay = ! chatDisplay">
+            <span class="fa-stack fa-lg float-xs-right" (click)="onToggleChat()">
               <i class="fa fa-circle fa-stack-2x"></i>
               <i class="fa fa-comments fa-stack-1x fa-inverse"></i>
             </span>
@@ -45,7 +45,7 @@
               <i class="fa fa-volume-up" aria-hidden="true"></i> Audio Settings
           </button>
     
-          <button (click)="chatDisplay = ! chatDisplay">
+          <button (click)="onToggleChat()">
               <i class="fa fa-comments" aria-hidden="true"></i> Chat Message
           </button>
           

@@ -141,26 +141,44 @@ export class LobbyComponent {
   */
   onClickMenu() {
     this.settingsDisplay = ! this.settingsDisplay;
+    this.updateUsername = false;
+    this.createRoom = false;
+    this.chatDisplay = false;
   }
-  
+ 
+  /**
+  *@desc This method will toggle chat function
+  */
+  onToggleChat() {
+    this.chatDisplay = ! this.chatDisplay;
+    this.createRoom = false;
+    this.settingsDisplay = false;
+    this.updateUsername = false;
+  }
   /**
   *@desc This method will toggle update name
   */
   onToggleUpdateName() {
     this.updateUsername = ! this.updateUsername;
     this.createRoom = false;
+    this.settingsDisplay = false;
+    this.chatDisplay = false;
   }
   /**
   *@desc This method will toggle create room
   */
   onToggleCreateRoom() {
     this.createRoom = ! this.createRoom;
+    this.settingsDisplay = false;
     this.updateUsername = false;
+    this.chatDisplay = false;
+    
   }
   /**
   *@desc This method will show the device settings in lobby
   */
   onClickDevice() {
+    this.hideAllDisplay();
     this.modalService.open(NgbdModalDeviceMenu);
   }
   /**
@@ -238,7 +256,12 @@ export class LobbyComponent {
       this.inputMessage = ''; 
     });
   }
-  
+  hideAllDisplay() {
+    this.settingsDisplay = false;
+    this.updateUsername = false;
+    this.createRoom = false;
+    this.chatDisplay = false;
+  }
   /**
   *@desc This method will subscribe to all events
   */
