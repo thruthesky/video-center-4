@@ -9,7 +9,6 @@ $whiteboard_medium_height: 600px;
 $whiteboard_large_width: 640px;
 $whiteboard_large_height: 800px;
 
-$background_color:#4a5a71;
 
 // base
 #room-page {
@@ -18,9 +17,7 @@ $background_color:#4a5a71;
 // layout
 #room-page {
     @media all and ( min-width: $break_point ) {
-        .left {
-            width: $left_width;
-        }
+        
         .content {
             position: relative;
             #whiteboard-container {
@@ -28,9 +25,33 @@ $background_color:#4a5a71;
                 top: 0;
                 left: $left_width + $gutter;
             }
+            &[whiteboard="false"] {
+                .left {
+                    #chat, #book {
+                        position: relative;
+                        z-index: 100;
+                    }
+                }
+                #video-container {
+                    position: absolute;
+                    z-index: 99;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    padding: $gutter;
+                    padding-left: $left_width + $gutter;
+                }
+            }
         }
+
+        .left {
+            width: $left_width;
+        }
+
     }
 }
+
+
 
 // => Narrrow
 
@@ -41,17 +62,29 @@ $background_color:#4a5a71;
 #video-container {
     margin-bottom: $margin_bottom;
     overflow: auto;
-    background-color: $background_color;
-    & > div {
-        width: 50%;
+    background-color: #fff;
+    .user {
+        position: relative;
         float: left;
+        width: 50%;
         video {
             display: block;
             width: 100%;
         }
+        .name {
+            position: absolute;
+            z-index: 100;
+            padding: .1em .4em;
+            box-sizing: border-box;
+            left: $margin_bottom;
+            bottom: $margin_bottom;
+            border-radius: 2px;
+            background-color: rgba( 200, 200, 200, .8 );
+            font-size: .8em;
+        }
     }
 }
-#chat{
+#chat {
     margin-bottom: $margin_bottom;
     span {
         cursor:pointer;
@@ -59,13 +92,12 @@ $background_color:#4a5a71;
     .chatbox {
         display: block;
         position: relative;
+        padding: $gutter;
         overflow: hidden;
         overflow-y: scroll; 
         margin-bottom: $margin_bottom;
-        
         background-color:#97d3ff;
         height: 140px;
-            
     }
 }
 
@@ -110,17 +142,29 @@ $background_color:#4a5a71;
     }
 }
 
-#image-directory {
-    margin-bottom: $margin_bottom;
-    background-color: $background_color;
-    color: white;
-    img {
-        width: 100%;
-        cursor: pointer;
+#book {
+    .file-uploaded {
+        overflow: auto;
+        background-color: #eee;
+        .file {
+            position: relative;
+            float: left;
+            width: 33.33%;
+            height: 68px;
+            img {
+                padding: 2px;
+                box-sizing: border-box;
+                width: 100%;
+            }
+            .fa-stack {
+                font-size: 1em;
+                position: absolute;
+                right: $margin_bottom;
+                bottom: $margin_bottom;
+            }
+        }
     }
 }
-
-
 
 /*
 

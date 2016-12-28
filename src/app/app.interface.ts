@@ -68,7 +68,7 @@ export interface VideoSetting {
 export interface DisplayElement {
     settingsDisplay:boolean;
     chatDisplay:boolean;
-    assetDisplay:boolean;
+    bookDisplay:boolean;
     deviceDisplay:boolean;
 }
 
@@ -132,7 +132,7 @@ export let videoSetting:VideoSetting = {
 export let displayElement: DisplayElement =  {
     settingsDisplay:false,
     chatDisplay:true,
-    assetDisplay:false,
+    bookDisplay:false,
     deviceDisplay:false
 }
 

@@ -33,7 +33,7 @@
         </button>
         </div>
         <div>
-        <button class='btn btn-info form-control' (click)="show.assetDisplay = ! show.assetDisplay">
+        <button class='btn btn-info form-control' (click)="show.bookDisplay = ! show.bookDisplay">
             Assets <i class="fa fa-picture-o" aria-hidden="true"></i>
         </button>
         </div>
@@ -71,29 +71,30 @@
                         <td width="99%"><input class="form-control" placeholder="Input Message" [(ngModel)]="inputMessage" (keyup.enter)="onSendMessage(inputMessage)"></td>
                         <td width="1%" (click)="onSendMessage(inputMessage)">
                             <span class="fa-stack fa-lg float-xs-right" (click)="onToggleCreateRoom()">
-                            <i class="fa fa-circle fa-stack-2x"></i>
-                            <i class="fa fa-arrow-right fa-stack-1x fa-inverse"></i>
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-arrow-right fa-stack-1x fa-inverse"></i>
                             </span>
                         </td>
                     </tr>
                 </table>
             </div><!--chat--> 
 
-            <div *ngIf="!show.assetDisplay" id="image-directory">
-                <p>Image Directory</p>
-                <div *ngIf=" imageUrlPhoto " (click)="onClickPreviewPhoto()">
-                <img [src]="imageUrlPhoto">
-                </div>
+            <div *ngIf="!show.bookDisplay" id="book">
                 <input type="file" (change)="onChangeFile($event)">
                 <div *ngIf="position && file_progress">
                     <progress [value]="position" max="100"></progress>
                 </div>
-                <div id="files">
-                    <div (click)="onClickSamplePreview(1)">Default</div>
-                    <div (click)="onClickSamplePreview(2)">Uploaded 1</div>
-                    <div (click)="onClickSamplePreview(3)">Uploaded 2</div>
+                <div *ngIf=" fileUploaded.length " class="file-uploaded">
+                    <div class="file" *ngFor=" let file of fileUploaded">
+                        <img [src]=" file.url " (click)=" onClickFile( file )">
+                        <span class="fa-stack fa-lg float-xs-right" (click)="onClickDeleteFile( file )">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-trash fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </div>
                 </div>
-            </div><!--image-directory-->
+            </div><!--/#book-->
+
         </aside>
 
         <div id="whiteboard-container" *ngIf="wb.whiteboardDisplay">

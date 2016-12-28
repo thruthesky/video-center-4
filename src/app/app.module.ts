@@ -6,7 +6,11 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 
+
+
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+import { FirebaseApiModule } from '../api/firebase-api/firebase-api-module';
 
 import { LobbyRoomName } from './app.interface';
 
@@ -64,6 +68,7 @@ appRoutes.push( { path: '', component: begin } );
     HttpModule,
     RouterModule.forRoot( appRoutes ),
     NgbModule.forRoot(),
+    FirebaseApiModule
   ],
   bootstrap: [ AppComponent ],
   providers: [ VideocenterService ]

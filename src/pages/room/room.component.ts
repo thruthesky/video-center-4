@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import * as xInterface from '../../app/app.interface';
 import { VideocenterService } from '../../providers/videocenter.service';
-// import { FirebaseStorage } from '../firebase-api/firebase-storage';
+import { FirebaseStorage, FILE_UPLOAD, FILE_UPLOADED } from '../../api/firebase-api/firebase-storage';
+import * as _ from 'lodash';
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html'
@@ -24,10 +25,13 @@ export class RoomComponent {
   vs: xInterface.VideoSetting = xInterface.videoSetting;
   show: xInterface.DisplayElement = xInterface.displayElement;
   
+  fileUploaded: Array< FILE_UPLOADED > = [];
+
   //displayWhiteboard: boolean = false;
   constructor( private router: Router,
-  // private fileStorage: FirebaseStorage,
-  private vc: VideocenterService ) {
+    private ngZone: NgZone,
+    private firebaseStorage: FirebaseStorage,
+    private vc: VideocenterService ) {
     this.validate();
     this.initialize();
     this.joinRoom();
@@ -289,22 +293,24 @@ export class RoomComponent {
    *@param event
    */
   addLocalVideo( event ) {
-    console.log("event: ", event);
-    setTimeout(()=> {
-      let newDiv = document.createElement("div");
-      let newVideo = event.mediaElement;
-      let videoParent = document.getElementById('video-container');
-      let oldVideo = document.getElementById(event.streamid);
-      newDiv.setAttribute('class', 'me');
-      if( oldVideo && oldVideo.parentNode) {
-        let myParentNode = oldVideo.parentNode;
-        if( myParentNode && myParentNode.parentNode)myParentNode.parentNode.removeChild(myParentNode);
-      }
-      if( videoParent ) {
-        newDiv.appendChild( newVideo );
-        videoParent.insertBefore(newDiv, videoParent.firstChild);
-      }
-    },700);
+    this.addVideo( event, 'me');
+
+    // console.log("event: ", event);
+    // setTimeout(()=> {
+    //   let newDiv = document.createElement("div");
+    //   let newVideo = event.mediaElement;
+    //   let videoParent = document.getElementById('video-container');
+    //   let oldVideo = document.getElementById(event.streamid);
+    //   newDiv.setAttribute('class', 'me');
+    //   if( oldVideo && oldVideo.parentNode) {
+    //     let myParentNode = oldVideo.parentNode;
+    //     if( myParentNode && myParentNode.parentNode)myParentNode.parentNode.removeChild(myParentNode);
+    //   }
+    //   if( videoParent ) {
+    //     newDiv.appendChild( newVideo );
+    //     videoParent.insertBefore(newDiv, videoParent.firstChild);
+    //   }
+    // },700);
   }
   /**
    *@desc This method will add 
@@ -312,22 +318,52 @@ export class RoomComponent {
    *@param event
    */
   addRemoteVideo( event ) {
+    this.addVideo( event, 'other');
+
+    // console.log("event: ", event);
+    // setTimeout(()=> {
+    //   let newDiv = document.createElement("div");
+    //   let newVideo = event.mediaElement;
+    //   let videoParent = document.getElementById('video-container');
+    //   let oldVideo = document.getElementById(event.streamid);
+    //   newDiv.setAttribute('class', 'other');
+    //   if( oldVideo && oldVideo.parentNode) {
+    //     let myParentNode = oldVideo.parentNode;
+    //     if( myParentNode && myParentNode.parentNode)myParentNode.parentNode.removeChild(myParentNode);
+    //   }
+    //   if( videoParent ) {
+    //     newDiv.appendChild( newVideo );
+    //     videoParent.appendChild( newDiv );
+    //   }
+    // },700);
+  }
+
+  addVideo(event, cls) {
     console.log("event: ", event);
-    setTimeout(()=> {
+    setTimeout( ()=> {
       let newDiv = document.createElement("div");
       let newVideo = event.mediaElement;
       let videoParent = document.getElementById('video-container');
       let oldVideo = document.getElementById(event.streamid);
-      newDiv.setAttribute('class', 'other');
-      if( oldVideo && oldVideo.parentNode) {
+      newDiv.setAttribute('class', 'user ' + cls);
+      if ( oldVideo && oldVideo.parentNode ) {
         let myParentNode = oldVideo.parentNode;
         if( myParentNode && myParentNode.parentNode)myParentNode.parentNode.removeChild(myParentNode);
       }
-      if( videoParent ) {
+      if ( videoParent ) {
         newDiv.appendChild( newVideo );
-        videoParent.appendChild( newDiv );
+        let myNameDiv = document.createElement("div");
+        let myname = 'No name';
+        if ( event.extra.myname ) {
+          myname = event.extra.myname;
+        }
+        myNameDiv.innerHTML = myname;
+        myNameDiv.setAttribute('class', 'name');
+        newDiv.appendChild( myNameDiv );
+        if ( cls == 'me' ) videoParent.insertBefore(newDiv, videoParent.firstChild);
+        else videoParent.appendChild( newDiv );
       }
-    },700);
+    }, 700);
   }
   /**
   *@desc This method will change video device
@@ -429,61 +465,70 @@ export class RoomComponent {
       });
     });
   }
-  /**
-  *@desc This method will change the imageUrlPhoto to samplePic
-  */
-  onClickSamplePreview(pic) {
-    if( pic == 1 ) this.imageUrlPhoto = this.wb.canvasPhoto;
-    if( pic == 2 ) this.imageUrlPhoto = xInterface.samplePics.pic1;
-    if( pic == 3 ) this.imageUrlPhoto = xInterface.samplePics.pic2;
-    
-  }
-  /**
-  *@desc This method will invoke the changeCanvasPhoto
-  */
-  onClickPreviewPhoto() {
-    this.changeCanvasPhoto( this.imageUrlPhoto );
+  
+  onClickFile( file ) {
+    this.changeCanvasPhoto( file.url );
     let room = localStorage.getItem('roomname');
-    let data :any = { room_name :room };
-    data.image_url = this.imageUrlPhoto;
-    data.command = "change-image";
-    this.vc.whiteboard( data,() => { console.log("change canvas image")} );
+    let data = {
+      room_name: room,
+      command: 'change-image',
+      image_url: file.url
+    };
+    console.log("book file clicked: ", data );
+    this.vc.whiteboard( data, () => {
+      console.log("book chagned:");
+    });
   }
+
   /**
   *@desc This method will change the canvasPhoto to imageUrlPhoto
   */
-  changeCanvasPhoto( image ) {
+  changeCanvasPhoto( imageUrl: string ) {
     let whiteboardcontainer = document.getElementById('whiteboard-container');
-    if(whiteboardcontainer)whiteboardcontainer.style.backgroundImage="url('"+ image+"')";
+    if ( whiteboardcontainer ) whiteboardcontainer.style.backgroundImage="url('"+ imageUrl+"')";
   }
+
   /**
   *@desc This method will set the dataPhoto for upload
   *then upload it
   *@param event
   */
   onChangeFile( event ) {
-    // let file = event.target.files[0];
-    // if ( file === void 0 ) return;
-    // this.file_progress = true;
-    // let ref = 'vc4/' +  file.name;
-    // this.fileStorage.upload( { file: file, ref: ref }, uploaded => {
-    //   this.onFileUploaded( uploaded.url, uploaded.ref );
-    //  },
-    //   e => {
-    //       this.file_progress = false;
-    //       alert(e);
-    //   },
-    //   percent => {
-    //       this.position = percent;
-    //   } );
+    if ( event === void 0 || event.target === void 0 || event.target.files === void 0 ) return;
+
+    let file = event.target.files[0];
+    if ( file === void 0 ) return;
+    this.file_progress = true;
+    let data: FILE_UPLOAD = {
+      file: file,
+      ref: 'temp/' + file.name
+    };
+    this.firebaseStorage.upload( data, ( uploaded: FILE_UPLOADED ) => {
+      this.onFileUploaded( uploaded );
+    },
+    e => {
+        this.file_progress = false;
+        alert(e);
+    },
+    percent => {
+        this.position = percent;
+        this.renderPage();
+        console.log("position: ", this.position);
+    } );
   }
   /**
   *@desc This method will be fired after uploading the image
   *@param url, ref
   */
-  onFileUploaded( url, ref ) {
+  onFileUploaded( uploaded: FILE_UPLOADED ) {
     this.file_progress = false;
-    this.imageUrlPhoto = url;
+    this.fileUploaded.push( uploaded );
+    this.renderPage();
+  }
+  onClickDeleteFile( file ) {
+    let re = confirm("Do you want to delete?");
+    if ( ! re ) return;
+    _.remove( this.fileUploaded, v => v.url == file.url );
   }
   /**
    * @desc Group for Whiteboard Functionality
@@ -653,4 +698,14 @@ export class RoomComponent {
         this.changeCanvasPhoto( data.image_url );
     }
   }
+
+  
+    renderPage() {
+        this.ngZone.run(() => {
+            // console.log('ngZone.run()');
+        });
+    }
+    
+
+
 }
