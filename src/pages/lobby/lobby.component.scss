@@ -1,0 +1,162 @@
+$blueborder: #3e9eff;
+
+@mixin box() {
+    margin: 0 auto 1em;
+    padding: 1em;
+    max-width: 544px;
+    background-color: #b3c7cc;
+    .title {
+        position: relative;
+        margin-bottom: .6em;
+        font-size: 1em;
+        font-weight: 200;
+        text-align: left;
+        color: #444;
+        .fa-close {
+            position: absolute;
+            right: 0;
+            cursor: pointer;
+        }
+    }
+}
+@mixin input_button() {
+    .form {
+        margin: .4em 0 0;
+        input, button {
+            margin: 0;
+            padding: .1em .2em;
+            box-sizing: border-box;
+            border: 1px solid #68b5df;
+        }
+        input {
+            width: 100%;
+        }
+        button {
+            padding-left: .6em;
+            padding-right: .6em;
+            background-color: #68b5df;
+            color: white;
+            cursor: pointer;
+        }
+    }
+}
+.lobby-page {
+    min-height: 100vh;
+    height: 100%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("/assets/img/b1.jpg");
+  
+}
+header {
+    nav {
+        border-radius: 0;
+        background: #3ea5ff;
+        .nav-buttons {
+            .fa-stack {
+                cursor: pointer;
+            }
+            i {
+                color:#1082c7;
+                &.fa-inverse {
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+
+.content {
+    padding: .4em;
+    margin-bottom: 45px;
+}
+
+
+#chat-container {
+    @include box();
+    .chatbox {
+        padding: .6em;
+        background-color: #eaeff2;
+        color: black;
+        height: 12.6em;
+        overflow: hidden;
+        overflow-y: scroll;
+        text-align: left;
+        .message {
+            border-bottom: 1px solid #ddd;
+            line-height: 200%;
+            i {
+                color: #888;
+            }
+        }      
+    }
+    @include input_button();
+}
+
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+#lobby-settings {
+    @include box();
+    .buttons {
+        button {
+            display: block;
+            margin: .2em;
+            padding: .6em;
+            width: 100%;
+            text-align: left;
+            border: 0;
+            cursor: pointer;
+            background-color: #eaeff2;
+            i {
+                display: inline-block;
+                padding-right: .4em;
+            }
+        }
+    }
+}
+
+#room-list {
+    display: block;
+    max-width: 544px;
+    margin:0 auto;
+
+    .title {
+        position: relative;
+        margin-bottom: .6em;
+        font-size: 1em;
+        font-weight: 200;
+        text-align: left;
+        color: #444;
+    }
+
+    .rooms {
+        margin-bottom: .2em;
+        border: 0.5px solid #aaa;
+        .room-name {
+            padding: .6em;
+            background-color: #b3c7cc;
+            color:#fff;
+            cursor: pointer;
+        }
+        .users {
+            padding: .6em;
+        }
+    }
+
+}
+
+#update-username {
+    @include box();
+    @include input_button();
+}
+
+#create-room {
+    @include box();
+    @include input_button();
+}

@@ -1,0 +1,140 @@
+<div class="lobby-page">
+  <header>
+    
+    <nav class="navbar">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-4 col-sm-4">
+            <logo-component></logo-component>
+          </div>
+
+          <div class="nav-buttons col-xs-8 col-sm-8">
+            <span class="fa-stack fa-lg float-xs-right" (click)="onClickMenu()">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-cog fa-stack-1x fa-inverse"></i>
+            </span>
+            <span class="fa-stack fa-lg float-xs-right" (click)="chatDisplay = ! chatDisplay">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-comments fa-stack-1x fa-inverse"></i>
+            </span>
+            <span class="fa-stack fa-lg float-xs-right" (click)="onToggleCreateRoom()">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-sign-in fa-stack-1x fa-inverse"></i>
+            </span>
+          </div>
+
+        </div>
+      </div>
+    </nav>  
+  </header>
+  <div class="content">
+      <div id="lobby-settings" *ngIf="settingsDisplay">
+        <div class="title">
+          <i class="fa fa-gear"></i>
+            Settings
+          <i class="fa fa-close" (click)="settingsDisplay=!settingsDisplay"></i>
+        </div>
+        <div class="buttons">
+          <button (click)="onClickDevice()">
+              <i class="fa fa-cog" aria-hidden="true"></i> Device Settings
+          </button>
+          <button (click)="onClickVideo()">
+              <i class="fa fa-video-camera" aria-hidden="true"></i> Video  Settings
+          </button>
+          <button (click)="onClickAudio()">
+              <i class="fa fa-volume-up" aria-hidden="true"></i> Audio Settings
+          </button>
+    
+          <button (click)="chatDisplay = ! chatDisplay">
+              <i class="fa fa-comments" aria-hidden="true"></i> Chat Message
+          </button>
+          
+          <button (click)="onToggleUpdateName()">
+              <i class="fa fa-user-plus" aria-hidden="true"></i> Update Name
+          </button>
+
+          <button (click)="onToggleCreateRoom()">
+              <i class="fa fa-plus" aria-hidden="true"></i> Create Room
+          </button>
+
+          <button (click)="onClickLogout()">
+            <i class="fa fa-sign-out" aria-hidden="true"></i> Sign out
+          </button>
+
+        </div>
+      </div>
+    <div  *ngIf="updateUsername" id="update-username">
+      <div class="title">
+        <i class="fa fa-user-plus"></i>
+          Update Username
+        <i class="fa fa-close" (click)="updateUsername=!updateUsername"></i>
+      </div> 
+      <table class="form" width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td width="99%"><input placeholder="Update Username" [(ngModel)]="inputUsername" (keyup.enter)="onUpdateUsername()"></td>
+          <td nowrap><button (click)="onUpdateUsername()"><i class="fa fa-arrow-right"></i></button></td>
+        </tr>
+      </table>
+    </div>
+    <div  *ngIf="createRoom" id="create-room">
+      <div class="title">
+        <i class="fa fa-plus"></i>
+          Create Room
+        <i class="fa fa-close" (click)="createRoom=!createRoom"></i>
+      </div>
+      <table class="form" width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td width="99%"><input placeholder="Create Room" [(ngModel)]="inputRoomname" (keyup.enter)="onCreateRoom()"></td>
+          <td nowrap><button (click)="onCreateRoom()"><i class="fa fa-arrow-right"></i></button></td>
+        </tr>
+      </table>
+    </div>
+
+
+    
+    <div *ngIf="chatDisplay" id="chat-container">
+      <div class="title">
+        <i class="fa fa-comments"></i>
+        Lobby Chat Box
+        <i class="fa fa-close" (click)="chatDisplay=!chatDisplay"></i>
+      </div>
+      <div class="chatbox" myautoscroll >
+          <div class="message" *ngFor="let messageData of listMessage[0].messages ">
+              <i>{{messageData.name}} : &nbsp;</i>{{ messageData.message }}
+          </div>
+      </div>
+      <table class="form" width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td width="99%"><input placeholder="..." [(ngModel)]="inputMessage" (keyup.enter)="onSendMessage(inputMessage)"></td>
+          <td nowrap><button (click)="onSendMessage(inputMessage)"><i class="fa fa-arrow-right"></i></button></td>
+        </tr>
+      </table>
+    </div><!--/#chat-container-->
+
+    <div id="room-list">
+      <div class="title"><i class="fa fa-bars"></i> Room List</div>
+      <div *ngFor = " let id of roomIds " >
+          <div *ngIf="rooms[id]?.name !=''" class="rooms">
+              <div class="room-name" (click)="onJoinRoom(rooms[id].name)">
+                {{ rooms[id].name }}
+              </div>
+              <div class="users">
+                  <span *ngFor = " let user of rooms[id].users " socket=" user.socket">
+                    {{ user.name }}
+                  </span>
+              </div>
+          </div>
+      </div>
+    </div><!--/#room-list-->
+
+  </div><!--/.content-->
+
+
+    
+  <footer>
+      <nav class="nav nav-fixed-bottom">
+          <copyright-component></copyright-component>
+      </nav>
+  </footer>
+</div>
+  <template ngbModalContainer></template> 

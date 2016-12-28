@@ -1,0 +1,222 @@
+$large_break: 730px;
+$my_min_width: 226px;
+$colorblue: #42bdec;
+$colorgrey:#4a5a71;
+$wb_s_width: 320px;
+$wb_s_height: 400px;
+$wb_m_width: 480px;
+$wb_m_height: 600px;
+$wb_l_width: 640px;
+$wb_l_height: 800px;
+
+
+// base
+
+// layout
+
+//     => Narrrow
+
+
+
+
+
+
+
+//     => Wide
+@media all and ( min-width: $large_break ) {
+        .content {
+            &[whiteboard="true"] {
+                .left {
+                    width: $my_min_width;
+                    #video-container {
+                        .myself, .others {
+                            display: inline-block;
+                            width: 50%;
+                            video {
+                                width: 100%;
+                            }
+                        }
+                    }
+                    #chat{
+                        width: 100%;
+                        .chatbox {
+                            display: block;
+                            position: relative;
+                            overflow: hidden;
+                            overflow-y: scroll; 
+                            
+                            background-color:#97d3ff;
+                            height: 140px;
+                                
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+// module/component
+
+nav {
+    border-radius: 0;
+    background: #3ea5ff;
+}
+
+// state
+
+// theme
+
+
+/*
+
+#room-page {
+    margin-bottom: 50px;
+}
+#room-settings {
+    z-index:110; 
+    width: 100%;
+    position: relative;
+    right: 0;
+    button {
+        border-radius: 0;
+        border-color: white;
+    }
+    @media all and ( min-width: $large_break ) {
+        width: 200px;
+        position: absolute;
+    }
+}
+
+
+#video-container {
+    &[whiteboard="false"] {
+        position:relative;
+        width: 100%;
+        @media all and ( min-width: $large_break ) {
+            position:absolute;
+            left: $my_width;
+            width: $my_width*2;
+        }
+    }
+    &[whiteboard="true"] {
+        position:relative;
+        width: 100%;
+        @media all and ( min-width: $large_break ) {
+            position:relative;
+            width: $my_width;
+        }
+    }
+   
+}
+
+#device-settings {
+    background-color: $colorgrey;
+    color:#fff; 
+    select {
+        max-width: $my_width;
+    }
+    width: $my_width;
+    @media all and ( min-width: $large_break ) {
+        width: $my_width;
+    }
+}
+
+#chat{
+    width: 100%;
+    @media all and ( min-width: $large_break ) {
+        width: $my_width;
+    }
+    .chatbox {
+        background-color:#97d3ff;
+        height: 140px;
+        overflow: hidden;
+        overflow-y: scroll;        
+    }
+}
+
+#image-directory {
+    background-color: $colorblue;
+    width: 100%;
+    input,p {
+        color:white;
+    }
+    #files {
+        min-height: 150px;
+        background-color: #97d3ff;
+    }
+    img {
+        width: 100%;
+    }
+    @media all and ( min-width: $large_break ) {
+        width: $my_width;
+        input {
+            color:white;
+            font-size:13px;
+        }
+        img {
+            width: $my_width;
+        }
+    }
+}
+
+#whiteboard-container {
+    position:relative;
+    width: $wb_s_width;
+    height: $wb_s_height;
+    margin-bottom: 50px;
+    overflow: hidden;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("assets/img/samplecanvas.png");
+    
+    &[size="small"] {
+        width: $wb_s_width;
+        height: $wb_s_height;
+        select {
+            width: 45px;
+        }
+    }
+    &[size="medium"] {
+        width: $wb_m_width;
+        height: $wb_m_height;
+    }
+    &[size="large"] {
+        width: $wb_l_width;
+        height: $wb_l_height;
+    }
+    .select-canvas-size {
+        display: none;
+    }
+    @media all and ( min-width: $large_break ) {
+        position: absolute;
+        z-index: 100;
+        top: 62px;
+        left: $my_width + 2px;
+        .select-canvas-size {
+            display: inline-block;
+        }
+    }
+    canvas {
+        position: absolute;
+        z-index: 101;
+    }
+ 
+    #canvas-image {
+        position: absolute;
+        z-index: 0;
+        width: 100%;
+    }
+ 
+    
+    #group-button {
+        z-index: 102;
+        display: block;
+        position: absolute;
+        top: 0.2em;
+        right: 0.2em;
+        
+       
+    }
+}
+*/

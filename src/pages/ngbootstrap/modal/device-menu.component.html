@@ -1,0 +1,38 @@
+<div class="modal-header">
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="modal-title">Device Menu</h4>
+    </div>
+    <div class="modal-body">
+      
+      <button class='btn btn-info' (click)="onClickVideo(); ">
+        Video Settings <i class="fa fa-video-camera" aria-hidden="true"></i>
+      </button>
+      <button class='btn btn-info' (click)="onClickAudio(); ">
+        Audio Settings <i class="fa fa-volume-up" aria-hidden="true"></i>
+      </button>
+      
+      <div *ngIf=" displayVideo">
+        <h4 class="modal-title">Video Settings</h4>
+        <div id="device-video-settings">
+          <select [(ngModel)]="vs.selectVideo" (ngModelChange)="onChangeVideo($event)">
+              <option value="">Select default Video</option>
+              <option *ngFor="let video of videos" value="{{ video.value }}" >{{video.text}}</option>
+          </select>
+          <div id="video-modal-container"></div>
+        </div>  
+      </div>
+      <div *ngIf=" displayAudio">
+        <h4 class="modal-title">Audio Settings</h4>
+        <div id="device-audio-settings">
+          <select [(ngModel)]="vs.selectAudio" (ngModelChange)="onChangeAudio($event)">
+              <option value="">Select default Audio</option>
+              <option *ngFor="let audio of audios" value="{{ audio.value }}" >{{audio.text}}</option>
+          </select>
+        </div>  
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Close</button>
+    </div>

@@ -1,0 +1,129 @@
+$large_break: 730px;
+$leftwidth: 226px;
+$colorblue: #42bdec;
+$boxsize: 300px;
+$blueborder: #3e9eff;
+
+
+.entrance-page {
+    min-height: 100vh;
+    height: 100%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url("/assets/img/b2.jpg");
+  
+}
+.modal-header {
+    text-align: center;
+}
+.modal-body {
+    margin-left:auto;
+    margin-right: auto;
+    width: 370px;
+}
+h2{
+    text-align: center;
+}
+nav {
+    border-radius: 0;
+    background: #3ea5ff;
+    .nav-buttons {
+        span {
+            display: inline-block;
+            padding-left: 1.2em;
+            padding-right: 1.2em;
+            cursor: pointer;
+            i {
+                color: #1082c7;
+                &.fa-inverse {
+                    color: #fff;
+                }
+            }
+        }
+    }
+ 
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+#entrance-container {
+    @media all and ( min-height: 560px ) {
+        margin-top: 50px;
+    }
+    @media all and ( min-height: 700px ) {
+        margin-top: 100px;
+    }
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    .settings-container {
+        padding: .6em;
+        background-color: #fff;
+        select {
+            margin-bottom: .4em;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .modal-title {
+            margin: .4em 0;
+
+            text-align: center;
+        }
+        .device-video-settings {
+            width: 100;
+        }
+        .device-audio-settings {
+            max-width: 100%;
+        }
+    }
+    .title-image {
+        img {
+            width: 100%;
+        }
+    }
+    
+    .form-container {
+        padding: 2.4em 2em 1em;
+        box-sizing: border-box;
+        background: #efefef;
+        font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+        input, button {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+    }
+
+    .buttons {
+        padding: .6em 0;
+        text-align: center;
+        span {
+            display: inline-block;
+            padding-left: 1.2em;
+            padding-right: 1.2em;
+            cursor: pointer;
+            i {
+                color: #1082c7;
+                &.fa-inverse {
+                    color: #fff;
+                }
+            }
+        }
+    }
+
+}
+
+
+
+
+
+
