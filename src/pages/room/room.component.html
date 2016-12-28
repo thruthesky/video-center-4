@@ -66,8 +66,17 @@
                         <b>{{messageData.name}} </b>{{ messageData.message }}
                     </div>
                 </div>
-                <input class="form-control" placeholder="Input Message" [(ngModel)]="inputMessage" (keyup.enter)="onSendMessage(inputMessage)">
-                <button class="btn btn-info form-control" (click)="onSendMessage(inputMessage)">Send Message</button>
+                <table width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td width="99%"><input class="form-control" placeholder="Input Message" [(ngModel)]="inputMessage" (keyup.enter)="onSendMessage(inputMessage)"></td>
+                        <td width="1%" (click)="onSendMessage(inputMessage)">
+                            <span class="fa-stack fa-lg float-xs-right" (click)="onToggleCreateRoom()">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-arrow-right fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
             </div><!--chat--> 
 
             <div *ngIf="!show.assetDisplay" id="image-directory">

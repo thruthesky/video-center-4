@@ -1,25 +1,72 @@
-$large_break: 730px;
-$my_min_width: 226px;
-$wb_s_width: 320px;
-$wb_s_height: 400px;
-$wb_m_width: 480px;
-$wb_m_height: 600px;
-$wb_l_width: 640px;
-$wb_l_height: 800px;
-$colorblue: #42bdec;
-$colorgrey:#4a5a71;
+$break_point: 600px;
+$left_width: 226px;
+$gutter: 10px;
+$margin_bottom: 6px;
+$whiteboard_small_width: 320px;
+$whiteboard_small_height: 400px;
+$whiteboard_medium_width: 480px;
+$whiteboard_medium_height: 600px;
+$whiteboard_large_width: 640px;
+$whiteboard_large_height: 800px;
+
+$background_color:#4a5a71;
 
 // base
 #room-page {
-    min-height: 100vh;
-    height: 100%;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-image: url("/assets/img/b1.jpg");
+    
 }
 // layout
+#room-page {
+    @media all and ( min-width: $break_point ) {
+        .left {
+            width: $left_width;
+        }
+        .content {
+            position: relative;
+            #whiteboard-container {
+                position: absolute;
+                top: 0;
+                left: $left_width + $gutter;
+            }
+        }
+    }
+}
 
 // => Narrrow
+
+
+
+
+
+#video-container {
+    margin-bottom: $margin_bottom;
+    overflow: auto;
+    background-color: $background_color;
+    & > div {
+        width: 50%;
+        float: left;
+        video {
+            display: block;
+            width: 100%;
+        }
+    }
+}
+#chat{
+    margin-bottom: $margin_bottom;
+    .chatbox {
+        display: block;
+        position: relative;
+        overflow: hidden;
+        overflow-y: scroll; 
+        margin-bottom: $margin_bottom;
+        
+        background-color:#97d3ff;
+        height: 140px;
+            
+    }
+}
+
+// module
 #room-settings {
     z-index:110; 
     width: 100%;
@@ -30,36 +77,20 @@ $colorgrey:#4a5a71;
         border-color: white;
     }
 }
-#video-container {
-    background-color: $colorgrey;
-    .myself, .others {
-        width: 50%;
-        video {
-            width: 100%;
-        }
-    }
-}
-#chat{
-    width: 100%;
-    .chatbox {
-        display: block;
-        position: relative;
-        overflow: hidden;
-        overflow-y: scroll; 
-        
-        background-color:#97d3ff;
-        height: 140px;
-            
-    }
-}
+
+
 #image-directory {
-    width: 100%;
-    background-color: $colorgrey;
+    margin-bottom: $margin_bottom;
+    background-color: $background_color;
     color: white;
     img {
         width: 100%;
     }
 }
+
+
+
+/*
 #whiteboard-container {
     margin-bottom: 50px;
     z-index: 100;
@@ -90,14 +121,14 @@ $colorgrey:#4a5a71;
 }
 
 // => Wide
-@media all and ( min-width: $large_break ) {
+@media all and ( min-width: $break_point ) {
     .content {
         #room-settings {
             position: absolute;
             width: 170px;
         }
         .left {
-            width: $my_min_width;
+            width: $left_width;
         }
         &[whiteboard="true"] {
             #video-container {
@@ -109,7 +140,7 @@ $colorgrey:#4a5a71;
                 position: absolute;
                 z-index: 100;
                 top: 62px;
-                left: $my_min_width + 2px;
+                left: $left_width + 2px;
                 #group-button {
                     display: block;
                     .select-canvas-size {
@@ -123,7 +154,7 @@ $colorgrey:#4a5a71;
                 position: absolute;
                 z-index: 100;
                 top: 62px;
-                left: $my_min_width + 2px;
+                left: $left_width + 2px;
                 .myself, .others {
                     display: inline-block;
                     width: 50%;
@@ -167,3 +198,4 @@ nav {
 }
 // theme
 
+*/

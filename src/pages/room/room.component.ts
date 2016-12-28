@@ -9,6 +9,7 @@ import { VideocenterService } from '../../providers/videocenter.service';
 })
 export class RoomComponent {
   myRoomname: string;
+  myName: string = null;
   inputMessage: string;
   imageUrlPhoto: string; 
   canvasPhoto: string;
@@ -38,10 +39,10 @@ export class RoomComponent {
   *@desc This method will validate if there is username and room
   */
   validate() {
-    let name = localStorage.getItem('username');
+    this.myName = localStorage.getItem('username');
     let room = localStorage.getItem('roomname');
-    if(name){
-      this.vc.updateUsername( name, re => {});
+    if ( this.myName ) {
+      this.vc.updateUsername( this.myName, re => {});
       if( room == xInterface.LobbyRoomName){
         setTimeout(()=>{
         this.vc.leaveRoom( ()=> {
@@ -73,6 +74,10 @@ export class RoomComponent {
     this.imageUrlPhoto = this.wb.canvasPhoto;
     this.canvasPhoto = this.wb.canvasPhoto;
     this.connection = VideocenterService.connection;
+    this.connection.extra = {
+      myname: 'JaeHo Song'
+    };
+
       this.connection.sdpConstraints.mandatory = {
           OfferToReceiveAudio: true,
           OfferToReceiveVideo: true
@@ -284,12 +289,13 @@ export class RoomComponent {
    *@param event
    */
   addLocalVideo( event ) {
+    console.log("event: ", event);
     setTimeout(()=> {
       let newDiv = document.createElement("div");
       let newVideo = event.mediaElement;
       let videoParent = document.getElementById('video-container');
       let oldVideo = document.getElementById(event.streamid);
-      newDiv.setAttribute('class', 'myself');
+      newDiv.setAttribute('class', 'me');
       if( oldVideo && oldVideo.parentNode) {
         let myParentNode = oldVideo.parentNode;
         if( myParentNode && myParentNode.parentNode)myParentNode.parentNode.removeChild(myParentNode);
@@ -306,12 +312,13 @@ export class RoomComponent {
    *@param event
    */
   addRemoteVideo( event ) {
+    console.log("event: ", event);
     setTimeout(()=> {
       let newDiv = document.createElement("div");
       let newVideo = event.mediaElement;
       let videoParent = document.getElementById('video-container');
       let oldVideo = document.getElementById(event.streamid);
-      newDiv.setAttribute('class', 'others');
+      newDiv.setAttribute('class', 'other');
       if( oldVideo && oldVideo.parentNode) {
         let myParentNode = oldVideo.parentNode;
         if( myParentNode && myParentNode.parentNode)myParentNode.parentNode.removeChild(myParentNode);
