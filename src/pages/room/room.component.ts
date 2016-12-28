@@ -75,7 +75,7 @@ export class RoomComponent {
     this.canvasPhoto = this.wb.canvasPhoto;
     this.connection = VideocenterService.connection;
     this.connection.extra = {
-      myname: 'JaeHo Song'
+      myname: this.myName
     };
 
       this.connection.sdpConstraints.mandatory = {

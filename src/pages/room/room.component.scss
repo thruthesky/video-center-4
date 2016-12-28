@@ -53,6 +53,9 @@ $background_color:#4a5a71;
 }
 #chat{
     margin-bottom: $margin_bottom;
+    span {
+        cursor:pointer;
+    }
     .chatbox {
         display: block;
         position: relative;
@@ -78,25 +81,12 @@ $background_color:#4a5a71;
     }
 }
 
-
-#image-directory {
-    margin-bottom: $margin_bottom;
-    background-color: $background_color;
-    color: white;
-    img {
-        width: 100%;
-    }
-}
-
-
-
-/*
 #whiteboard-container {
     margin-bottom: 50px;
     z-index: 100;
     overflow: hidden;
-    width: $wb_s_width;
-    height: $wb_s_height;
+    width: $whiteboard_small_width;
+    height: $whiteboard_small_height;
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-image: url("/assets/img/samplecanvas.png");
@@ -119,6 +109,21 @@ $background_color:#4a5a71;
         z-index: 102;
     }
 }
+
+#image-directory {
+    margin-bottom: $margin_bottom;
+    background-color: $background_color;
+    color: white;
+    img {
+        width: 100%;
+        cursor: pointer;
+    }
+}
+
+
+
+/*
+
 
 // => Wide
 @media all and ( min-width: $break_point ) {
