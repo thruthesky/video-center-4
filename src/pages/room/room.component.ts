@@ -2,7 +2,9 @@ import { Component, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import * as xInterface from '../../app/app.interface';
 import { VideocenterService } from '../../providers/videocenter.service';
-// import * as _ from 'lodash';
+import * as _ from 'lodash';
+import { FileServer, FILE_UPLOAD_OPTIONS, FILE_UPLOADED } from '../../providers/file-server';
+
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html'
@@ -24,10 +26,12 @@ export class RoomComponent {
   vs: xInterface.VideoSetting = xInterface.videoSetting;
   show: xInterface.DisplayElement = xInterface.displayElement;
   
+  fileUploaded: Array<FILE_UPLOADED> = [];
 
   //displayWhiteboard: boolean = false;
   constructor( private router: Router,
     private ngZone: NgZone,
+    private fileServer: FileServer,
     private vc: VideocenterService ) {
     this.validate();
     this.initialize();
@@ -35,6 +39,7 @@ export class RoomComponent {
     this.streamOnConnection();
     this.showSettings();
     this.listenEvents();
+    this.getUploadedFiles();
    }
   /**
   *@desc This method will validate if there is username and room
@@ -495,38 +500,47 @@ export class RoomComponent {
     let file = event.target.files[0];
     if ( file === void 0 ) return;
     this.file_progress = true;
-<<<<<<< HEAD
-    let data: FILE_UPLOAD = {
-      file: file,
-      ref: 'temp/' + this.myName + '/' + file.name
+    let options: FILE_UPLOAD_OPTIONS = {
+      folder: this.myName
     };
-    this.firebaseStorage.upload( data, ( uploaded: FILE_UPLOADED ) => {
-      this.onFileUploaded( uploaded );
+    this.fileServer.upload( options, ( uploaded: FILE_UPLOADED ) => {
+      this.onFileUploadSuccess( uploaded );
     },
     e => {
         this.file_progress = false;
         alert(e);
+    },
+    code => {
+      console.log("complete code: ", code);
     },
     percent => {
         this.position = percent;
         this.renderPage();
         console.log("position: ", this.position);
     } );
-=======
->>>>>>> 94f4b6fc785cc150e5ade29201e27104977bf598
   }
   /**
   *@desc This method will be fired after uploading the image
   *@param url, ref
   */
-  onFileUploaded( ) {
+  onFileUploadSuccess( uploaded: FILE_UPLOADED ) {
+    console.log("onFileUploadSuccess()");
     this.file_progress = false;
+    this.fileUploaded.push( uploaded );
+    this.position = 0;
     this.renderPage();
   }
-  onClickDeleteFile( file ) {
+  onClickDeleteFile( file: FILE_UPLOADED ) {
     let re = confirm("Do you want to delete?");
     if ( ! re ) return;
+    this.fileServer.delete( file, () => {
+      console.log("file deleted");
+      _.remove( this.fileUploaded, (v: FILE_UPLOADED) => v.url == file.url );
+    },
+    e => alert(e),
+    () => {}  );
   }
+  
   /**
    * @desc Group for Whiteboard Functionality
    */
@@ -691,7 +705,14 @@ export class RoomComponent {
     }
   }
 
-  
+  getUploadedFiles() {
+    this.fileServer.list( this.myName, fileUploaded => {
+      console.log("getUploadedFiles()");
+      this.fileUploaded = fileUploaded;
+    },
+    e => alert('failed to get uploaded files'),
+    () => {} );
+  }
     renderPage() {
         this.ngZone.run(() => {
             // console.log('ngZone.run()');

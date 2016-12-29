@@ -144,8 +144,12 @@ $whiteboard_large_height: 800px;
 
 #book {
     .file-uploaded {
-        overflow: auto;
-        background-color: #eee;
+        &:after {
+            display: block;
+            clear: both;
+            content: '';
+        }
+        background-color: #bbb;
         .file {
             position: relative;
             float: left;

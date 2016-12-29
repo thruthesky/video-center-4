@@ -28,6 +28,8 @@ import { NgbdModalDeviceMenu } from '../pages/ngbootstrap/modal/device-menu.comp
 
 import { VideocenterService } from '../providers/videocenter.service';
 
+import { FileServer } from '../providers/file-server';
+
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'entrance', component: EntranceComponent },
@@ -69,7 +71,7 @@ appRoutes.push( { path: '', component: begin } );
     NgbModule.forRoot()
   ],
   bootstrap: [ AppComponent ],
-  providers: [ VideocenterService ]
+  providers: [ VideocenterService, FileServer ]
 })
 export class AppModule {}
 
