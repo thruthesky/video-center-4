@@ -2,8 +2,7 @@ import { Component, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import * as xInterface from '../../app/app.interface';
 import { VideocenterService } from '../../providers/videocenter.service';
-import { FirebaseStorage, FILE_UPLOAD, FILE_UPLOADED } from '../../api/firebase-api/firebase-storage';
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html'
@@ -25,12 +24,10 @@ export class RoomComponent {
   vs: xInterface.VideoSetting = xInterface.videoSetting;
   show: xInterface.DisplayElement = xInterface.displayElement;
   
-  fileUploaded: Array< FILE_UPLOADED > = [];
 
   //displayWhiteboard: boolean = false;
   constructor( private router: Router,
     private ngZone: NgZone,
-    private firebaseStorage: FirebaseStorage,
     private vc: VideocenterService ) {
     this.validate();
     this.initialize();
@@ -495,10 +492,10 @@ export class RoomComponent {
   */
   onChangeFile( event ) {
     if ( event === void 0 || event.target === void 0 || event.target.files === void 0 ) return;
-
     let file = event.target.files[0];
     if ( file === void 0 ) return;
     this.file_progress = true;
+<<<<<<< HEAD
     let data: FILE_UPLOAD = {
       file: file,
       ref: 'temp/' + this.myName + '/' + file.name
@@ -515,20 +512,20 @@ export class RoomComponent {
         this.renderPage();
         console.log("position: ", this.position);
     } );
+=======
+>>>>>>> 94f4b6fc785cc150e5ade29201e27104977bf598
   }
   /**
   *@desc This method will be fired after uploading the image
   *@param url, ref
   */
-  onFileUploaded( uploaded: FILE_UPLOADED ) {
+  onFileUploaded( ) {
     this.file_progress = false;
-    this.fileUploaded.push( uploaded );
     this.renderPage();
   }
   onClickDeleteFile( file ) {
     let re = confirm("Do you want to delete?");
     if ( ! re ) return;
-    _.remove( this.fileUploaded, v => v.url == file.url );
   }
   /**
    * @desc Group for Whiteboard Functionality
@@ -561,12 +558,7 @@ export class RoomComponent {
   onChangeCanvasSize( size ) {
     this.wb.optionSizeCanvas = size;
     this.checkCanvasSize( size );
-    // let room = localStorage.getItem('roomname');
-    // let data :any = { room_name :room };
-    // data.command = "canvas-size";
-    // data.size = size;
-    // this.vc.whiteboard( data,() => { console.log("change canvas size")} );
-  }
+   }
   /**
   *@desc This method will change the size of canvas
   *and container then get whiteboard history

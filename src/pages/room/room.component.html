@@ -84,7 +84,7 @@
                 <div *ngIf="position && file_progress">
                     <progress [value]="position" max="100"></progress>
                 </div>
-                <div *ngIf=" fileUploaded.length " class="file-uploaded">
+                <div *ngIf=" fileUploaded " class="file-uploaded">
                     <div class="file" *ngFor=" let file of fileUploaded">
                         <img [src]=" file.url " (click)=" onClickFile( file )">
                         <span class="fa-stack fa-lg float-xs-right" (click)="onClickDeleteFile( file )">
