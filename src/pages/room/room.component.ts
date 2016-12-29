@@ -501,7 +501,7 @@ export class RoomComponent {
     this.file_progress = true;
     let data: FILE_UPLOAD = {
       file: file,
-      ref: 'temp/' + file.name
+      ref: 'temp/' + this.myName + '/' + file.name
     };
     this.firebaseStorage.upload( data, ( uploaded: FILE_UPLOADED ) => {
       this.onFileUploaded( uploaded );
