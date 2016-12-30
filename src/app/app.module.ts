@@ -11,9 +11,8 @@ import { AppComponent } from './app.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
-import { LobbyRoomName } from './app.interface';
 
-import { HomeComponent } from '../pages/home/home.component';
+
 import { EntranceComponent } from '../pages/entrance/entrance.component';
 import { LobbyComponent } from '../pages/lobby/lobby.component';
 import { RoomComponent } from '../pages/room/room.component';
@@ -31,7 +30,6 @@ import { VideocenterService } from '../providers/videocenter.service';
 import { FileServer } from '../providers/file-server';
 
 const appRoutes: Routes = [
-  { path: 'home', component: HomeComponent },
   { path: 'entrance', component: EntranceComponent },
   { path: 'lobby', component: LobbyComponent },
   { path: 'room', component: RoomComponent },
@@ -52,7 +50,6 @@ appRoutes.push( { path: '', component: begin } );
   declarations: [
     AppComponent,
     LayoutComponent,
-    HomeComponent,
     EntranceComponent,
     LobbyComponent,
     RoomComponent,

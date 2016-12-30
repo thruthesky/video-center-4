@@ -15,13 +15,20 @@ export class EntranceComponent {
   displayVideo: boolean = false;
 
   connection:any;
-  username:string;
+  username: string = null;
+  noUsername: boolean = false;
+  roomname: string;
   displayImage: boolean = true;  
   vs: xInterface.VideoSetting = xInterface.videoSetting;
   constructor( 
     private router: Router,
     private vc: VideocenterService,
     private modalService: NgbModal ) {
+
+    this.username = localStorage.getItem('username');
+    if ( ! this.username ) this.noUsername = true;
+    this.roomname = localStorage.getItem('roomname');
+    
       this.validate();
       this.initialize();
   }
@@ -29,14 +36,12 @@ export class EntranceComponent {
   *@desc This method will validate if there is username
   */
   validate() {
-    let username = localStorage.getItem('username');
-    let roomname = localStorage.getItem('roomname');
-    if( username ) {
-      if ( roomname == xInterface.LobbyRoomName ) {
+    if( this.username ) {
+      if ( this.roomname == xInterface.LobbyRoomName ) {
         this.router.navigate(['lobby']); 
       }
-      this.vc.updateUsername( username, re => {
-          if ( roomname && roomname != xInterface.LobbyRoomName ) { 
+      this.vc.updateUsername( this.username, re => {
+          if ( this.roomname && this.roomname != xInterface.LobbyRoomName ) { 
             this.router.navigate(['room']);   
           }
       });

@@ -1,5 +1,5 @@
 
-<div class="entrance-page">
+<div *ngIf=" noUsername " class="entrance-page">
   <nav class="navbar">
     <div class="container-fluid">
       <div class="row">
@@ -89,7 +89,7 @@
         <copyright-component></copyright-component>
     </nav>
   </footer>
-</div>
+</div><!--/.entrance-page-->
 
 <template ngbModalContainer #deviceSetting let-c="close" let-d="dismiss">
   <div class="modal-header">
