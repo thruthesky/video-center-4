@@ -34,8 +34,10 @@ const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'entrance', component: EntranceComponent },
   { path: 'lobby', component: LobbyComponent },
-  { path: 'room', component: RoomComponent }
+  { path: 'room', component: RoomComponent },
+  { path: '', component: EntranceComponent }
 ];
+/*
 let username = localStorage.getItem('username');
 let roomname = localStorage.getItem('roomname');
 let begin = null;
@@ -45,7 +47,7 @@ if ( username ) {
 }
 else begin = EntranceComponent;
 appRoutes.push( { path: '', component: begin } );
-
+*/
 @NgModule({
   declarations: [
     AppComponent,
