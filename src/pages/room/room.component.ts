@@ -480,6 +480,7 @@ export class RoomComponent {
     this.vc.whiteboard( data, () => {
       console.log("book chagned:");
     });
+    this.onClickClear();
   }
 
   /**
