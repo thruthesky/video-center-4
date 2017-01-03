@@ -171,6 +171,7 @@ export class VideocenterService {
       this.myEvent.emit(data);
     });
     socket.on('whiteboard', data => {
+      console.log('whiteboard:',data);
       data.eventType = "whiteboard";
       this.myEvent.emit(data);
     });

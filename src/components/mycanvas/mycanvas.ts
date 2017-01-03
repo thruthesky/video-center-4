@@ -108,7 +108,7 @@ export class MycanvasDirective {
     data.draw_mode = this.drawMode;
     data.command = "draw"; 
     data.room_name = localStorage.getItem('roomname');
-    this.vc.whiteboard( data, ()=>{console.log('success'); });
+    this.vc.whiteboard( data, ()=>{});
     this.draw_on_canvas( data );
     this.mouse.pos_prev.x = this.mouse.pos.x;
     this.mouse.pos_prev.y = this.mouse.pos.y;

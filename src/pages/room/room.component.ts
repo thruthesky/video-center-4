@@ -94,11 +94,7 @@ export class RoomComponent {
   *@desc This method will invoke the setCanvasSize and setDefaultDevice Method
   */
   ngOnInit() {
-    
     this.setDefaultDevice();
-    //let videoParent = document.getElementById('video-container');
-    //videoParent.setAttribute('whiteboard', 'false');
-    // this.displayWhiteboard = false;
   }
  
   /**
@@ -119,7 +115,7 @@ export class RoomComponent {
     let room = localStorage.getItem('roomname');
     this.vc.joinRoom( room, (data)=> {
       this.myRoomname = data.room;
-      this.getWhiteboardHistory( data.room );
+      this.getWhiteboardSettings( data.room );
       this.openOrJoinSession( data.room );
     });
   }
@@ -131,7 +127,22 @@ export class RoomComponent {
   streamOnConnection() {
     this.connection.onstream = (event) => this.addUserVideo( event ); 
   }
-
+  /**
+  *@desc This method will get the whiteboard settings of the room
+  *@param roomName 
+  */
+  getWhiteboardSettings( roomName ) {
+    let data :any = { room_name : roomName };
+    data.command = "settings";
+    this.vc.whiteboard( data,( settings ) => {
+        console.log("get whiteboard settings:", settings);
+        if( settings.display ) {
+          settings.room_name = this.myRoomname; 
+          this.onShowWhiteboard( settings);
+          if( settings.image_url )setTimeout(()=>{ this.changeCanvasPhoto( settings.image_url );},100);
+        }
+    });
+  }
   /**
   *@desc This method will get the whiteboard history of the room
   *@param roomName 
@@ -139,8 +150,16 @@ export class RoomComponent {
   getWhiteboardHistory( roomName ) {
     let data :any = { room_name : roomName };
     data.command = "history";
-    this.vc.whiteboard( data,() => { console.log("get whiteboard history")} );
+    this.vc.whiteboard( data,( settings ) => {
+        console.log("get whiteboard history:", settings);
+        if( settings.display ) {
+          settings.room_name = this.myRoomname; 
+          this.onShowWhiteboard( settings);
+          if( settings.image_url ) this.changeCanvasPhoto( settings.image_url );
+        }
+    });
   }
+
   /**
   *@desc This method will open or join a session to have a video conference
   *if the roomName is not lobby
@@ -254,23 +273,21 @@ export class RoomComponent {
   */
   onClickWhiteboard() {
     let room = localStorage.getItem('roomname');
-    // let videoParent = document.getElementById('video-container');
     this.wb.whiteboardDisplay = ! this.wb.whiteboardDisplay;
     if(this.wb.whiteboardDisplay){
       setTimeout(()=>{
-        //this.displayWhiteboard = true;
-        //videoParent.setAttribute('whiteboard', 'true');
         let data :any = { room_name :room };
         data.command = "show-whiteboard";
-        this.getWhiteboardHistory( room );
         this.setCanvasSize( this.wb.canvasWidth, this.wb.canvasHeight);
-        this.vc.whiteboard( data,() => { console.log("show whiteboard")} );
+        this.vc.whiteboard( data,(data) => {
+            console.log("show whiteboard");
+            if( data.image_url ) this.changeCanvasPhoto( data.image_url );
+        });
         this.wb.optionSizeCanvas = 'small';
         this.checkCanvasSize( 'small' );
+        this.getWhiteboardHistory( room );
       },100);
     } else {
-        //this.displayWhiteboard = false;
-        //videoParent.setAttribute('whiteboard', 'false');
         let data :any = { room_name :room };
         data.command = "hide-whiteboard";
         this.vc.whiteboard( data,() => { console.log("hide whiteboard")} );
@@ -296,23 +313,6 @@ export class RoomComponent {
    */
   addLocalVideo( event ) {
     this.addVideo( event, 'me');
-
-    // console.log("event: ", event);
-    // setTimeout(()=> {
-    //   let newDiv = document.createElement("div");
-    //   let newVideo = event.mediaElement;
-    //   let videoParent = document.getElementById('video-container');
-    //   let oldVideo = document.getElementById(event.streamid);
-    //   newDiv.setAttribute('class', 'me');
-    //   if( oldVideo && oldVideo.parentNode) {
-    //     let myParentNode = oldVideo.parentNode;
-    //     if( myParentNode && myParentNode.parentNode)myParentNode.parentNode.removeChild(myParentNode);
-    //   }
-    //   if( videoParent ) {
-    //     newDiv.appendChild( newVideo );
-    //     videoParent.insertBefore(newDiv, videoParent.firstChild);
-    //   }
-    // },700);
   }
   /**
    *@desc This method will add 
@@ -321,23 +321,6 @@ export class RoomComponent {
    */
   addRemoteVideo( event ) {
     this.addVideo( event, 'other');
-
-    // console.log("event: ", event);
-    // setTimeout(()=> {
-    //   let newDiv = document.createElement("div");
-    //   let newVideo = event.mediaElement;
-    //   let videoParent = document.getElementById('video-container');
-    //   let oldVideo = document.getElementById(event.streamid);
-    //   newDiv.setAttribute('class', 'other');
-    //   if( oldVideo && oldVideo.parentNode) {
-    //     let myParentNode = oldVideo.parentNode;
-    //     if( myParentNode && myParentNode.parentNode)myParentNode.parentNode.removeChild(myParentNode);
-    //   }
-    //   if( videoParent ) {
-    //     newDiv.appendChild( newVideo );
-    //     videoParent.appendChild( newDiv );
-    //   }
-    // },700);
   }
 
   addVideo(event, cls) {
@@ -684,28 +667,34 @@ export class RoomComponent {
         this.checkCanvasSize(data.size);
     }
     else if ( data.command == 'show-whiteboard' ) {
-        //let videoParent = document.getElementById('video-container');
-        //videoParent.setAttribute('whiteboard', 'true');
-        //this.displayWhiteboard = true; 
-        this.wb.whiteboardDisplay = true;
-        this.getWhiteboardHistory( data.room_name );
-        setTimeout(()=>{
-          this.setCanvasSize( this.wb.canvasWidth, this.wb.canvasHeight);
-          this.wb.optionSizeCanvas = 'small';
-          this.checkCanvasSize( 'small' );  
-        }, 100);
+        this.onShowWhiteboard( data );
     }     
     else if ( data.command == 'hide-whiteboard' ) {
         this.wb.whiteboardDisplay = false;
-        //this.displayWhiteboard = false;
-        //let videoParent = document.getElementById('video-container');
-        //videoParent.setAttribute('whiteboard', 'false');      
     }
     else if ( data.command == 'change-image' ) {
         this.changeCanvasPhoto( data.image_url );
     }
+    else if ( data.command == 'history' ) { 
+    }
   }
-
+  /**
+  *@desc This method will show the whiteboard and set image,and set the canvas size to small 
+  *@param data
+  */
+  onShowWhiteboard( data ) {
+    this.wb.whiteboardDisplay = true;
+    this.getWhiteboardHistory( data.room_name );
+    setTimeout(()=>{
+      this.setCanvasSize( this.wb.canvasWidth, this.wb.canvasHeight);
+      this.wb.optionSizeCanvas = 'small';
+      this.checkCanvasSize( 'small' );
+      if( data.image_url ) this.changeCanvasPhoto( data.image_url );  
+    }, 100);
+  }
+  /**
+  *@desc This method will get the list of uploaded files in the server
+  */
   getUploadedFiles() {
     this.fileServer.list( this.myName, fileUploaded => {
       console.log("getUploadedFiles()");
@@ -714,11 +703,13 @@ export class RoomComponent {
     e => alert('failed to get uploaded files'),
     () => {} );
   }
-    renderPage() {
-        this.ngZone.run(() => {
-            // console.log('ngZone.run()');
-        });
-    }
+  /**
+  *@desc This method will run the ngZone 
+  */
+  renderPage() {
+      this.ngZone.run(() => {
+      });
+  }
     
 
 
