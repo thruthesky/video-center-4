@@ -174,7 +174,7 @@ export class MycanvasDirective {
     if ( typeof data.lineJoin == 'undefined' ) data.lineJoin = 'round';
     if ( typeof data.draw_mode == 'undefined'  ) data.draw_mode = 'l';
     if ( typeof data.lineWidth == 'undefined' || data.lineWidth == "" ) data.lineWidth = 2;
-    if ( typeof data.color == 'undefined' ) data.color = 'black';
+    if ( typeof data.color == 'undefined' ) data.color = '#161515';
     let ox = line[0].x * size;
     let oy = line[0].y * size;
     let dx = line[1].x * size;

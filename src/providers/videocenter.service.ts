@@ -23,7 +23,6 @@ export class VideocenterService {
    */
   getSocket() {
     if ( VideocenterService.socket === false ) {
-        console.log(VideocenterService.connection);
         VideocenterService.socket = VideocenterService.connection.getSocket();
     }
     return VideocenterService.socket;
@@ -35,7 +34,6 @@ export class VideocenterService {
   connect() {
     console.log("Videocenter::connect()");
     VideocenterService.connection = new RTCMultiConnection();
-    console.log("my connection:",VideocenterService.connection);
     VideocenterService.connection.socketURL = this.socketUrl;
     this.initializeConnection();
     this.listen();
@@ -171,7 +169,6 @@ export class VideocenterService {
       this.myEvent.emit(data);
     });
     socket.on('whiteboard', data => {
-      console.log('whiteboard:',data);
       data.eventType = "whiteboard";
       this.myEvent.emit(data);
     });

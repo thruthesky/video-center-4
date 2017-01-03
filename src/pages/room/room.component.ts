@@ -77,6 +77,7 @@ export class RoomComponent {
     this.wb.selectDrawSize = this.wb.size[0].value;
     this.wb.selectDrawColor = this.wb.colors[0].value;
     this.wb.selectSizeCanvas = this.wb.sizeCanvas[0].value;
+    this.wb.optionDrawColor =  this.wb.selectDrawColor;
     this.imageUrlPhoto = this.wb.canvasPhoto;
     this.canvasPhoto = this.wb.canvasPhoto;
     this.connection = VideocenterService.connection;
@@ -135,7 +136,6 @@ export class RoomComponent {
     let data :any = { room_name : roomName };
     data.command = "settings";
     this.vc.whiteboard( data,( settings ) => {
-        console.log("get whiteboard settings:", settings);
         if( settings.display ) {
           settings.room_name = this.myRoomname; 
           this.onShowWhiteboard( settings);
@@ -151,7 +151,6 @@ export class RoomComponent {
     let data :any = { room_name : roomName };
     data.command = "history";
     this.vc.whiteboard( data,( settings ) => {
-        console.log("get whiteboard history:", settings);
         if( settings.display ) {
           settings.room_name = this.myRoomname; 
           this.onShowWhiteboard( settings);
@@ -280,7 +279,6 @@ export class RoomComponent {
         data.command = "show-whiteboard";
         this.setCanvasSize( this.wb.canvasWidth, this.wb.canvasHeight);
         this.vc.whiteboard( data,(data) => {
-            console.log("show whiteboard");
             if( data.image_url ) this.changeCanvasPhoto( data.image_url );
         });
         this.wb.optionSizeCanvas = 'small';
@@ -290,7 +288,7 @@ export class RoomComponent {
     } else {
         let data :any = { room_name :room };
         data.command = "hide-whiteboard";
-        this.vc.whiteboard( data,() => { console.log("hide whiteboard")} );
+        this.vc.whiteboard( data,() => { } );
     }
   }
   
@@ -324,7 +322,6 @@ export class RoomComponent {
   }
 
   addVideo(event, cls) {
-    console.log("event: ", event);
     setTimeout( ()=> {
       let newDiv = document.createElement("div");
       let newVideo = event.mediaElement;
