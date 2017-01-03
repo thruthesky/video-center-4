@@ -8,6 +8,10 @@ $whiteboard_medium_width: 480px;
 $whiteboard_medium_height: 600px;
 $whiteboard_large_width: 640px;
 $whiteboard_large_height: 800px;
+$color_pallete_1:#346c9d;
+$color_pallete_2:#68b5df;
+$color_pallete_3:#ebf4fb;
+$color_pallete_4:#79aac8;
 
 
 // base
@@ -99,12 +103,17 @@ $whiteboard_large_height: 800px;
         overflow: hidden;
         overflow-y: scroll; 
         margin-bottom: $margin_bottom;
-        background-color:#97d3ff;
+        background-color:$color_pallete_2;
         height: 140px;
     }
 }
 
 // module
+
+nav {
+    border-radius: 0;
+    background-color: $color_pallete_1;
+}
 #room-settings {
     z-index:110; 
     width: 100%;
@@ -154,12 +163,13 @@ $whiteboard_large_height: 800px;
             clear: both;
             content: '';
         }
-        background-color: #bbb;
+        background-color: $color_pallete_4;
         .file {
             position: relative;
             float: left;
             width: 33.33%;
             height: 68px;
+            cursor:pointer;
             img {
                 padding: 2px;
                 box-sizing: border-box;
