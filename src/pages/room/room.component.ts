@@ -84,11 +84,11 @@ export class RoomComponent {
     this.connection.extra = {
       myname: this.myName
     };
-
-      this.connection.sdpConstraints.mandatory = {
-          OfferToReceiveAudio: true,
-          OfferToReceiveVideo: true
-      };
+    this.connection.updateExtraData();
+    this.connection.sdpConstraints.mandatory = {
+        OfferToReceiveAudio: true,
+        OfferToReceiveVideo: true
+    };
     
   }
   /**
@@ -166,6 +166,10 @@ export class RoomComponent {
   */
   openOrJoinSession( roomName ) {
     if( roomName !== xInterface.LobbyRoomName ) {
+      // this.connection.extra = {
+      //   myname: this.myName
+      // };
+      console.log("Name before joining session",this.connection.extra.myname);
       setTimeout(()=>{
         this.connection.openOrJoin( roomName, (roomExist) => {
           if(roomExist)console.log("I Join the Room");
@@ -325,6 +329,7 @@ export class RoomComponent {
 
   addVideo(event, cls) {
     setTimeout( ()=> {
+      console.log("Event:",event);
       let newDiv = document.createElement("div");
       let newVideo = event.mediaElement;
       let videoParent = document.getElementById('video-container');
