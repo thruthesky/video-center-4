@@ -10,6 +10,7 @@ import { VideocenterService } from '../../providers/videocenter.service';
   templateUrl: './lobby.component.html'
 })
 export class LobbyComponent {
+  connection:any;
   myUsername: string;
   inputUsername: string;
   inputRoomname: string;
@@ -49,6 +50,11 @@ export class LobbyComponent {
   *@desc This method will initialize the roompage
   */
   initialize() {
+    let myName = localStorage.getItem('username');
+    this.connection = VideocenterService.connection;
+    this.connection.extra = {
+      myname: myName
+    };
     this.inputMessage = '';
     if ( this.listMessage[0] === void 0 ) this.listMessage[0] = { messages: [] };
   }

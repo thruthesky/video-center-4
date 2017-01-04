@@ -117,7 +117,7 @@ export class RoomComponent {
     this.vc.joinRoom( room, (data)=> {
       this.myRoomname = data.room;
       this.getWhiteboardSettings( data.room );
-      setTimeout(()=>{this.openOrJoinSession( data.room );},100);
+      this.openOrJoinSession( data.room );
     });
   }
 
