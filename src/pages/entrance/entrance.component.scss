@@ -1,9 +1,11 @@
 $large_break: 730px;
 $leftwidth: 226px;
-$colorblue: #42bdec;
 $boxsize: 300px;
-$blueborder: #3e9eff;
-
+$color_pallete_1:#346c9d;
+$color_pallete_2:#68b5df;
+$color_pallete_3:#ebf4fb;
+$color_pallete_4:#79aac8;
+$color_pallete_5:#2e3035;
 
 .entrance-page {
     min-height: 100vh;
@@ -26,7 +28,7 @@ h2{
 }
 nav {
     border-radius: 0;
-    background: #3ea5ff;
+    background: $color_pallete_5;
     .nav-buttons {
         span {
             display: inline-block;
@@ -34,9 +36,9 @@ nav {
             padding-right: 1.2em;
             cursor: pointer;
             i {
-                color: #1082c7;
+                color: $color_pallete_1;
                 &.fa-inverse {
-                    color: #fff;
+                    color: $color_pallete_3;
                 }
             }
         }
@@ -62,7 +64,7 @@ footer {
     width: 300px;
     .settings-container {
         padding: .6em;
-        background-color: #fff;
+        background-color: $color_pallete_3;
         select {
             margin-bottom: .4em;
             width: 100%;
@@ -89,7 +91,7 @@ footer {
     .form-container {
         padding: 2.4em 2em 1em;
         box-sizing: border-box;
-        background: #efefef;
+        background: $color_pallete_3;
         font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
         input, button {
             display: block;
@@ -100,6 +102,7 @@ footer {
         button {
             margin-top: 1em;
             margin-bottom: 1em;
+            background-color: $color_pallete_2;
         }
     }
 
@@ -112,9 +115,9 @@ footer {
             padding-right: 1.2em;
             cursor: pointer;
             i {
-                color: #1082c7;
+                color: $color_pallete_1;
                 &.fa-inverse {
-                    color: #fff;
+                    color: $color_pallete_3;
                 }
             }
         }

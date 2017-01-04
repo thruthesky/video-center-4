@@ -1,17 +1,20 @@
-$blueborder: #3e9eff;
-
+$color_pallete_1:#346c9d;
+$color_pallete_2:#68b5df;
+$color_pallete_3:#ebf4fb;
+$color_pallete_4:#79aac8;
+$color_pallete_5:#2e3035;
 @mixin box() {
     margin: 0 auto 1em;
     padding: 1em;
     max-width: 544px;
-    background-color: #b3c7cc;
+    background-color: $color_pallete_4;
     .title {
         position: relative;
         margin-bottom: .6em;
         font-size: 1em;
         font-weight: 200;
         text-align: left;
-        color: #444;
+        color: $color_pallete_3;
         .fa-close {
             position: absolute;
             right: 0;
@@ -26,7 +29,7 @@ $blueborder: #3e9eff;
             margin: 0;
             padding: .1em .2em;
             box-sizing: border-box;
-            border: 1px solid #68b5df;
+            border: 1px solid $color_pallete_2;
         }
         input {
             width: 100%;
@@ -34,8 +37,8 @@ $blueborder: #3e9eff;
         button {
             padding-left: .6em;
             padding-right: .6em;
-            background-color: #68b5df;
-            color: white;
+            background-color: $color_pallete_2;
+            color: $color_pallete_3;
             cursor: pointer;
         }
     }
@@ -51,15 +54,15 @@ $blueborder: #3e9eff;
 header {
     nav {
         border-radius: 0;
-        background: #3ea5ff;
+        background: $color_pallete_5;
         .nav-buttons {
             .fa-stack {
                 cursor: pointer;
             }
             i {
-                color:#1082c7;
+                color: $color_pallete_1;
                 &.fa-inverse {
-                    color: #fff;
+                    color: $color_pallete_3;
                 }
             }
         }
@@ -77,18 +80,15 @@ header {
     @include box();
     .chatbox {
         padding: .6em;
-        background-color: #eaeff2;
-        color: black;
+        background-color: $color_pallete_3;
+        color: $color_pallete_5;
         height: 12.6em;
         overflow: hidden;
         overflow-y: scroll;
         text-align: left;
         .message {
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid $color_pallete_2;
             line-height: 200%;
-            i {
-                color: #888;
-            }
         }      
     }
     @include input_button();
@@ -112,10 +112,11 @@ footer {
             text-align: left;
             border: 0;
             cursor: pointer;
-            background-color: #eaeff2;
+            background-color: $color_pallete_3;
             i {
                 display: inline-block;
                 padding-right: .4em;
+                color:$color_pallete_5;
             }
         }
     }
@@ -129,25 +130,26 @@ footer {
     .title {
         position: relative;
         margin-bottom: .6em;
+        padding: .6em;
         font-size: 1em;
         font-weight: 200;
         text-align: left;
-        color: #444;
-        background-color: white;
+        color: $color_pallete_3;
+        background-color: $color_pallete_4;
     }
 
     .rooms {
         margin-bottom: .2em;
-        border: 0.5px solid #aaa;
+        border: 0.5px solid $color_pallete_4;
         .room-name {
             padding: .6em;
-            background-color: #b3c7cc;
-            color:#fff;
+            background-color: $color_pallete_4;
+            color:$color_pallete_3;
             cursor: pointer;
         }
         .users {
             padding: .6em;
-            background-color: #fff;
+            background-color: $color_pallete_3;
         }
     }
 

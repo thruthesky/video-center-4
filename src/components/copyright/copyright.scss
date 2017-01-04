@@ -1,8 +1,12 @@
-
+$color_pallete_1:#346c9d;
+$color_pallete_2:#68b5df;
+$color_pallete_3:#ebf4fb;
+$color_pallete_4:#79aac8;
+$color_pallete_5:#2e3035;
 .copyright {
     padding: 1em;
-    background: #3ea5ff;
-    color: white;
+    background: $color_pallete_5;
+    color: $color_pallete_3;
     text-align: center;
     font-size: 80%;
 }

@@ -6,46 +6,61 @@
         <div class="col-xs-4 col-sm-4">
           <logo-component></logo-component>
         </div>
-        <div class="col-xs-8 col-sm-8">
-            <button class="btn btn-info float-xs-right" (click)="onClickLobby()"><i class="fa fa-sign-out" aria-hidden="true" ></i></button>
-            <button class="btn btn-info float-xs-right" (click)="onClickMenu()"><i class="fa fa-cog" aria-hidden="true" ></i></button>
-            <button class="btn btn-info float-xs-right" (click)="onClickWhiteboard()"><i class="fa fa-pencil-square-o" aria-hidden="true" ></i></button>
+        <div class="nav-buttons col-xs-8 col-sm-8">
+        
+            <span class="fa-stack fa-lg float-xs-right" (click)="onClickLobby()">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-sign-out fa-stack-1x fa-inverse"></i>
+            </span>
+            <span class="fa-stack fa-lg float-xs-right" (click)="onClickMenu()">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-cog fa-stack-1x fa-inverse"></i>
+            </span>
+            <span class="fa-stack fa-lg float-xs-right" (click)="onClickWhiteboard()">
+              <i class="fa fa-circle fa-stack-2x"></i>
+              <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
+            </span>
         </div>
       </div>
     </div>
   </nav>  
 </header>
+
 <section class="content" [attr.whiteboard]=" wb.whiteboardDisplay ">
   <div id="room-settings" *ngIf="show.settingsDisplay">
         <div>
-        <button class='btn btn-info form-control' (click)="show.deviceDisplay = ! show.deviceDisplay">
+        <button class='btn btn-info form-control' (click)="show.deviceDisplay = ! show.deviceDisplay;show.settingsDisplay = ! show.settingsDisplay;">
            Device Settings <i class="fa fa-cog" aria-hidden="true"></i> 
         </button>
         </div>
         <div>
-        <button class='btn btn-info form-control' (click)="show.chatDisplay = ! show.chatDisplay">
+        <button class='btn btn-info form-control' (click)="show.chatDisplay = ! show.chatDisplay;show.settingsDisplay = ! show.settingsDisplay;">
             Chat Message <i class="fa fa-comments" aria-hidden="true"></i>
         </button>
         </div>
         <div>
-        <button class='btn btn-info form-control' (click)="onClickWhiteboard()">
+        <button class='btn btn-info form-control' (click)="onClickWhiteboard();show.settingsDisplay = ! show.settingsDisplay;">
             Whiteboard <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
         </button>
         </div>
         <div>
-        <button class='btn btn-info form-control' (click)="show.bookDisplay = ! show.bookDisplay">
+        <button class='btn btn-info form-control' (click)="show.bookDisplay = ! show.bookDisplay;show.settingsDisplay = ! show.settingsDisplay;">
             Assets <i class="fa fa-picture-o" aria-hidden="true"></i>
         </button>
         </div>
         <div>
-        <button class='btn btn-info form-control' (click)="onClickLobby()">
+        <button class='btn btn-info form-control' (click)="onClickLobby();show.settingsDisplay = ! show.settingsDisplay;">
             Leave <i class="fa fa-sign-out" aria-hidden="true"></i>
         </button>
         </div>
     </div> 
         <aside class="left">
-            <div class="device-video">
-                <div *ngIf="show.deviceDisplay" id="device-settings">
+            <div *ngIf="show.deviceDisplay" id="device-settings">
+                    <div class="title">
+                        <i class="fa fa-comments"></i>
+                        Device Settings
+                        <i class="fa fa-close" (click)="show.deviceDisplay=!show.deviceDisplay"></i>
+                    </div>
                     <select [(ngModel)]="vs.selectAudio" (ngModelChange)="onChangeAudio($event)">
                         <option value="">Select default Audio</option>
                         <option *ngFor="let audio of audios" value="{{ audio.value }}" >{{audio.text}}</option>
@@ -55,31 +70,38 @@
                         <option *ngFor="let video of videos" value="{{ video.value }}" >{{video.text}}</option>
                     </select>
                 </div>
+            <div class="device-video">
+                
                 <div id="video-container">
                     
                 </div>
             </div>
 
-            <div *ngIf="show.chatDisplay" id="chat">
-                <div class="chatbox" myautoscroll>
-                    <div *ngFor="let messageData of listMessage[0].messages ">
-                        <b>{{messageData.name}} </b>{{ messageData.message }}
-                    </div>
+            <div *ngIf="show.chatDisplay" id="chat-container">
+            <div class="title">
+                <i class="fa fa-comments"></i>
+                Room Chat Box
+                <i class="fa fa-close" (click)="show.chatDisplay=!show.chatDisplay"></i>
+            </div>
+            <div class="chatbox" myautoscroll >
+                <div class="message" *ngFor="let messageData of listMessage[0].messages ">
+                    <i>{{messageData.name}} : &nbsp;</i>{{ messageData.message }}
                 </div>
-                <table width="100%" cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="99%"><input class="form-control" placeholder="Input Message" [(ngModel)]="inputMessage" (keyup.enter)="onSendMessage(inputMessage)"></td>
-                        <td width="1%" (click)="onSendMessage(inputMessage)">
-                            <span class="fa-stack fa-lg float-xs-right" (click)="onToggleCreateRoom()">
-                                <i class="fa fa-circle fa-stack-2x"></i>
-                                <i class="fa fa-arrow-right fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </td>
-                    </tr>
-                </table>
-            </div><!--chat--> 
+            </div>
+            <table class="form" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                <td width="99%"><input placeholder="..." [(ngModel)]="inputMessage" (keyup.enter)="onSendMessage(inputMessage)"></td>
+                <td nowrap><button (click)="onSendMessage(inputMessage)"><i class="fa fa-arrow-right"></i></button></td>
+                </tr>
+            </table>
+            </div><!--/#chat-container-->
 
             <div *ngIf="!show.bookDisplay" id="book">
+                <div class="title">
+                    <i class="fa fa-comments"></i>
+                    Book
+                    <i class="fa fa-close" (click)="show.bookDisplay=!show.bookDisplay"></i>
+                </div>
                 <input type="file" (change)="onChangeFile($event)">
                 <div *ngIf="position && file_progress">
                     <progress [value]="position" max="100"></progress>
@@ -99,7 +121,6 @@
 
         <div id="whiteboard-container" *ngIf="wb.whiteboardDisplay">
             <div id="canvas-image">
-            <!--<img [src]="wb.canvasPhoto">-->
             </div>
             <canvas mycanvas id="mycanvas" [drawSize]="wb.optionDrawSize" [drawColor]="wb.optionDrawColor" [drawMode]="wb.optionDrawMode" [sizeCanvas]="wb.optionSizeCanvas"></canvas>
             <div id="group-button">

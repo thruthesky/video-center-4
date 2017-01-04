@@ -119,7 +119,7 @@ export let whiteboardSetting:WhiteboardSetting = {
   colors: whiteboardColors,
   size: whiteboardSize,
   sizeCanvas: sizeCanvas,
-  canvasPhoto: "../../assets/img/samplecanvas.png",
+  canvasPhoto: "../../assets/img/default.png",
   canvasWidth: "340px",
   canvasHeight: "400px",
   whiteboardDisplay: false

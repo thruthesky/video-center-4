@@ -1,17 +1,19 @@
-$blueborder: #3e9eff;
+$color_pallete_1:#346c9d;
+$color_pallete_2:#68b5df;
+$color_pallete_3:#ebf4fb;
+$color_pallete_4:#79aac8;
+$color_pallete_5:#373940;
 .modal-body {
     max-width: 500px;
     text-align: center;
     margin:0 auto;
     margin-top: 10px;
     margin-bottom: 50px;
-    border: 0.5px solid $blueborder;
+    border: 0.5px solid $color_pallete_2;
     select {
         max-width: 226px;
     }
-
-
-    #video-modal-container {
-        width: 50%;
+    button,button:visited,button:hover,button:active,button:focus {
+        background-color: $color_pallete_2;
     }
 }

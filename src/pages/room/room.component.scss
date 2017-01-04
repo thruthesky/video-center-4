@@ -12,18 +12,66 @@ $color_pallete_1:#346c9d;
 $color_pallete_2:#68b5df;
 $color_pallete_3:#ebf4fb;
 $color_pallete_4:#79aac8;
+$color_pallete_5:#2e3035;
 
+@mixin title() {
+    .title {
+        
+        position: relative;
+        margin-bottom: .6em;
+        font-size: 1em;
+        font-weight: 200;
+        color: $color_pallete_3;
+        .fa-close {
+            position: absolute;
+            right: 0;
+            cursor: pointer;
+        }
+    }
+}
 
 // base
-#room-page {
-    
-}
+
 // layout
 #room-page {
+    min-height: 100vh;
+    height: 100%;
+        nav {
+            border-radius: 0;
+            background: $color_pallete_5;
+            .nav-buttons {
+                span {
+                    display: inline-block;
+                    padding-left: 1.2em;
+                    padding-right: 1.2em;
+                    cursor: pointer;
+                    i {
+                        color: $color_pallete_1;
+                        &.fa-inverse {
+                            color: $color_pallete_3;
+                        }
+                    }
+                }
+            }
+        
+        }
+    #device-settings {
+        @include title;
+        margin-bottom: .6em;
+        padding:.6em;
+        background-color: $color_pallete_4;
+        select {
+            width: 100%;
+        }
+    }
     @media all and ( min-width: $break_point ) {
         
         .content {
             position: relative;
+            #room-settings {
+                position: absolute;
+                width: 170px;
+            }
             #whiteboard-container {
                 position: absolute;
                 top: 0;
@@ -32,6 +80,7 @@ $color_pallete_4:#79aac8;
                     display: inline-block;
                 }
             }
+            
             &[whiteboard="false"] {
                 .left {
                     #chat, #book {
@@ -39,37 +88,46 @@ $color_pallete_4:#79aac8;
                         z-index: 100;
                     }
                 }
-                #video-container {
+                .device-video {
+                    padding: $gutter;
+                    padding-left: $left_width + $gutter;
                     position: absolute;
-                    z-index: 99;
                     top: 0;
                     left: 0;
                     right: 0;
-                    padding: $gutter;
-                    padding-left: $left_width + $gutter;
+                    z-index: -1;
                 }
+                
             }
         }
-
         .left {
             width: $left_width;
+        }
+        #chat-container {
+            .chatbox {
+                padding: .6em;
+                background-color: $color_pallete_3;
+                color: $color_pallete_5;
+                height: 12.6em;
+                overflow: hidden;
+                overflow-y: scroll;
+                text-align: left;
+                .message {
+                    border-bottom: 1px solid $color_pallete_2;
+                    line-height: 200%;
+                }      
+            }
         }
 
     }
 }
 
-
-
 // => Narrrow
-
-
-
-
 
 #video-container {
     margin-bottom: $margin_bottom;
     overflow: auto;
-    background-color: #fff;
+    background-color: $color_pallete_4;
     .user {
         position: relative;
         float: left;
@@ -118,23 +176,24 @@ $color_pallete_4:#79aac8;
     right: 0;
     button {
         border-radius: 0;
-        border-color: white;
+        border-color: $color_pallete_3;
+        background-color: $color_pallete_5;
     }
 }
 
 #whiteboard-container {
     margin-bottom: 50px;
+    margin-left:auto;
+    margin-right:auto;
     z-index: 100;
     overflow: hidden;
     width: $whiteboard_small_width;
     height: $whiteboard_small_height;
-    // background-size: 100% 100%;
     background-size: 100% auto;
     background-repeat: no-repeat;
-    background-image: url("/assets/img/samplecanvas.png");
+    background-image: url("/assets/img/default.png");
     background-position-y: center;
-    margin-left:auto;
-    margin-right:auto;
+    border:1px solid $color_pallete_5;
     canvas {
         position: absolute;
         z-index: 101;
@@ -154,13 +213,20 @@ $color_pallete_4:#79aac8;
 }
 
 #book {
+    @include title;
+    padding: .6em;
+    background-color: $color_pallete_4;
+    input {
+        width: 100%;
+        color: $color_pallete_3;
+    }
     .file-uploaded {
         &:after {
             display: block;
             clear: both;
             content: '';
         }
-        background-color: $color_pallete_4;
+        background-color: $color_pallete_3;
         .file {
             position: relative;
             float: left;
