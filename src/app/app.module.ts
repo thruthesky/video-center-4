@@ -6,12 +6,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 
-
-
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
-
-
 
 import { EntranceComponent } from '../pages/entrance/entrance.component';
 import { LobbyComponent } from '../pages/lobby/lobby.component';
@@ -32,7 +27,9 @@ import { FileServer } from '../providers/file-server';
 const appRoutes: Routes = [
   { path: 'entrance', component: EntranceComponent },
   { path: 'lobby', component: LobbyComponent },
+  { path: 'lobby/:username', component: LobbyComponent },
   { path: 'room', component: RoomComponent },
+  { path: 'room/:username/:roomname', component: RoomComponent },
   { path: '', component: EntranceComponent }
 ];
 /*

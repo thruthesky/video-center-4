@@ -1,5 +1,5 @@
 import { Component, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as xInterface from '../../app/app.interface';
 import { VideocenterService } from '../../providers/videocenter.service';
 import * as _ from 'lodash';
@@ -30,17 +30,34 @@ export class RoomComponent {
 
   //displayWhiteboard: boolean = false;
   constructor( private router: Router,
+    private routes: ActivatedRoute,
     private ngZone: NgZone,
     private fileServer: FileServer,
     private vc: VideocenterService ) {
-    this.validate();
-    this.initialize();
-    this.joinRoom();
-    this.streamOnConnection();
-    this.showSettings();
-    this.listenEvents();
-    this.getUploadedFiles();
-   }
+      this.checkParams();
+      this.validate();
+      this.initialize();
+      this.joinRoom();
+      this.streamOnConnection();
+      this.showSettings();
+      this.listenEvents();
+      this.getUploadedFiles();
+  }
+  /**
+  *@desc This method will check if there is username parameter
+  */
+  checkParams() {
+    let username;
+    let roomname;
+    this.routes.params.subscribe(
+        params =>{
+          username = params['username'];
+          roomname = params['roomname'];
+        }
+    );
+    if(typeof username != 'undefined')localStorage.setItem('username', username );
+    if(typeof roomname != 'undefined')localStorage.setItem('roomname', roomname );
+  }
   /**
   *@desc This method will validate if there is username and room
   */

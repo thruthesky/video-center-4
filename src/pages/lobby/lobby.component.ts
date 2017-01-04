@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { NgbdModalDeviceMenu } from '../ngbootstrap/modal/device-menu.component';
 import * as xInterface from '../../app/app.interface';
@@ -22,11 +22,23 @@ export class LobbyComponent {
   rooms: xInterface.ROOMS = <xInterface.ROOMS> {};
   listMessage: xInterface.MESSAGELIST = <xInterface.MESSAGELIST> {};
   constructor( private router: Router,
+  private routes: ActivatedRoute,
   private vc: VideocenterService, private modalService: NgbModal  ) {
+    this.checkParams();
     this.validate();
     this.initialize();
     this.joinLobby();
     this.listenEvents();
+  }
+  /**
+  *@desc This method will check if there is username parameter
+  */
+  checkParams() {
+    let username;
+    this.routes.params.subscribe(
+        params =>{username = params['username'];}
+    );
+    if(typeof username != 'undefined')localStorage.setItem('username', username );
   }
   /**
   *@desc This method will validate if there is username
