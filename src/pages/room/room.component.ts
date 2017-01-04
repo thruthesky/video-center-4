@@ -166,12 +166,14 @@ export class RoomComponent {
   */
   openOrJoinSession( roomName ) {
     if( roomName !== xInterface.LobbyRoomName ) {
-      this.connection.openOrJoin( roomName, (roomExist) => {
-        if(roomExist)console.log("I Join the Room");
-        else console.log("I Open the Room");
-        this.connection.socket.on( this.connection.socketCustomEvent, message => { } );
-        this.connection.socket.emit( this.connection.socketCustomEvent, this.connection.userid);
-      });
+      setTimeout(()=>{
+        this.connection.openOrJoin( roomName, (roomExist) => {
+          if(roomExist)console.log("I Join the Room");
+          else console.log("I Open the Room");
+          this.connection.socket.on( this.connection.socketCustomEvent, message => { } );
+          this.connection.socket.emit( this.connection.socketCustomEvent, this.connection.userid);
+        });
+      },100);
     }
   }
   /**
