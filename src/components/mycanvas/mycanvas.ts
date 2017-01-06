@@ -230,14 +230,57 @@ export class MycanvasDirective {
   listenEvents() {
     this.vc.myEvent.subscribe( item => {
       if( item.eventType == "click-clear-canvas") this.broadcastClearCanvas();
-      if( item.eventType == "whiteboard")  this.onWhiteboardEvent( item ); 
+      if( item.eventType == "whiteboard")  this.onWhiteboardEvent( item );
+      if( item.eventType == "whiteboard-mytextarea")  this.onWhiteboardTextArea( item );  
     });  
+  }
+  /**
+  *@desc This method will invoke the fillWhiteboardTextArea
+  *@param data
+  */
+  onWhiteboardTextArea( data ) {
+    let font_size = parseInt(this.drawSize);
+    data.color = this.drawColor;
+    if ( typeof font_size == 'undefined' || font_size === void 0 ) font_size = 2;
+    data.font = (font_size * 4)+'px' + ' ' + data.font_family;
+    
+    data.room_name = localStorage.getItem('roomname');
+    data.command = "whiteboard-textarea";
+    let size = this.getCanvasSize();
+
+    data.textarea_left = data.textarea_left / size;
+    data.textarea_top = data.textarea_top  / size;
+    
+      this.vc.whiteboard( data,(  ) => {
+        this.fillWhiteboardTextArea( data );
+      });
+
+    
+    
+  }
+  /**
+  *@desc This method will fill the Whiteboard TextArea
+  *@param data
+  */
+  fillWhiteboardTextArea( data ) {
+    if ( typeof data.color == 'undefined' ) data.color = '#161515';
+    let size = this.getCanvasSize();
+    let ctx = this.canvas_context;
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.font = data.font;
+    ctx.textBaseline = data.text_baseline;
+    ctx.fillStyle = data.color;
+   
+    let left = data.textarea_left * size;
+    let top = data.textarea_top  * size;
+ 
+    ctx.fillText( data.processed_line, left, top );
   }
   /**
   *@desc This method will invoke the method depending on data.command
   *@param data
   */
-  onWhiteboardEvent( data ) {  
+  onWhiteboardEvent( data ) {
     if ( data.command == 'draw' ) {
         this.draw_on_canvas(data);
     }
@@ -246,6 +289,11 @@ export class MycanvasDirective {
     }     
     else if ( data.command == 'clear' ) {
         this.clear_my_canvas();        
+    }
+    //Text Editor Canvas
+    else if ( data.command == 'whiteboard-textarea' ) {
+      console.log(data);
+      this.fillWhiteboardTextArea( data );
     }
   }
 }

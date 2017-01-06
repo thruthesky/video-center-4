@@ -170,6 +170,7 @@ export class VideocenterService {
     });
     socket.on('whiteboard', data => {
       data.eventType = "whiteboard";
+      console.log("whiteboard:",data);
       this.myEvent.emit(data);
     });
     socket.on('log-out', data => {

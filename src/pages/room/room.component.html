@@ -126,6 +126,7 @@
             <div id="group-button">
                 <button class="btn btn-info" (click)="onClickDrawMode()"><i class="fa fa-pencil" aria-hidden="true"></i> </button>  
                 <button class="btn btn-info" (click)="onClickEraseMode()"><i class="fa fa-eraser" aria-hidden="true"></i></button> 
+                <button class="btn btn-info" (click)="onClickTextMode()"><i class="fa fa-font" aria-hidden="true"></i> </button>
                 <button class="btn btn-info" (click)="onClickClear()"><i class="fa fa-square-o" aria-hidden="true"></i></button>
                 <select [(ngModel)]="wb.selectDrawColor" (ngModelChange)="wb.optionDrawColor = $event">
                     <option *ngFor="let color of wb.colors" value="{{ color.value }}" >{{color.text}}</option>
@@ -137,6 +138,9 @@
                     <option *ngFor="let csize of wb.sizeCanvas" value="{{ csize.value }}" >{{csize.text}}</option>
                 </select>
             </div>
+            <canvas id="tempCanvas" [attr.drawMode]="wb.optionDrawMode"  #tempCanvas></canvas>
+            <textarea id="textTool" #textTool [attr.drawColor]="wb.optionDrawColor" [attr.drawSize]="wb.optionDrawSize"></textarea>
+            <div id="tempTextContainer" style="display:none" #tempTextContainer></div>
         </div><!--/#whiteborad-container-->
         
 </section>

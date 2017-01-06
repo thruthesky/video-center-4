@@ -99,7 +99,7 @@ export let whiteboardColors = [
 export let whiteboardSize = [
     {text:"XS" , value: "2" },
     {text:"S" , value: "4" },
-    {text:"M" , value: "5" },
+    {text:"M" , value: "6" },
     {text:"L" , value: "8" },
     {text:"XL" , value: "10" }
 ];

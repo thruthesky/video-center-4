@@ -28,7 +28,15 @@ export class RoomComponent {
   
   fileUploaded: Array<FILE_UPLOADED> = [];
 
-  //displayWhiteboard: boolean = false;
+  //Text Editor Canvas
+  wbContainer:any;
+  tempCanvas: any;
+  tempContext: any;
+  textArea: any;
+  tempTextContainer: any;
+  mouse: any = { click:false, x: 0, y: 0 };
+  start_mouse: any = { x: 0, y: 0 };
+
   constructor( private router: Router,
     private routes: ActivatedRoute,
     private ngZone: NgZone,
@@ -298,6 +306,7 @@ export class RoomComponent {
     this.wb.whiteboardDisplay = ! this.wb.whiteboardDisplay;
     if(this.wb.whiteboardDisplay){
       setTimeout(()=>{
+        this.initializeTextEditor();
         let data :any = { room_name :room };
         data.command = "show-whiteboard";
         this.setCanvasSize( this.wb.canvasWidth, this.wb.canvasHeight);
@@ -562,13 +571,21 @@ export class RoomComponent {
    */
   onClickDrawMode() {
     this.wb.optionDrawMode = "l";
+    this.hideTextArea();
   } 
   /**
    *@desc This method will change the optionDrawMode to e - erase
    */
   onClickEraseMode() {
     this.wb.optionDrawMode = "e";
+    this.hideTextArea();
   }
+  /**
+   *@desc This method will change the optionDrawMode to t - line
+   */
+  onClickTextMode() {
+    this.wb.optionDrawMode = "t";
+  } 
   /**
   *@desc This method will pass the size to
   *changeCanvasSize and broadcast to the room
@@ -590,26 +607,179 @@ export class RoomComponent {
       else if ( size == 'medium' ) { w = '480px'; h = '600px'; }
       else if ( size == 'large' ) {w = '640px';h = '800px';}
       this.setCanvasSize( w, h );
+      this.setTempCanvasSize( w, h );
       this.setCanvasContainerSize( size );
       this.getWhiteboardHistory( room );
   }
+    /**
+    *@desc This method will set the canvas size
+    *@param width
+    *@param height
+    */
+    setCanvasSize( width, height ) {
+      let mycanvas= document.getElementById('mycanvas');
+      mycanvas.setAttribute('width', width);
+      mycanvas.setAttribute('height', height);
+    }
+    /**
+    *@desc This method will set the canvas container size
+    *@param size
+    */
+    setCanvasContainerSize( size ) {
+      let container= document.getElementById('whiteboard-container');
+      container.setAttribute('size', size);
+    }
+
   /**
-   *@desc This method will set the canvas size
-   *@param width
-   *@param height
-   */
-  setCanvasSize( width, height ) {
-     let mycanvas= document.getElementById('mycanvas');
-     mycanvas.setAttribute('width', width);
-     mycanvas.setAttribute('height', height);
+    *@desc This method will set the temp canvas size
+    *@param width
+    *@param height
+    */
+  setTempCanvasSize( width, height ) {
+      let mycanvas= document.getElementById('tempCanvas');
+      mycanvas.setAttribute('width', width);
+      mycanvas.setAttribute('height', height);
   }
   /**
-   *@desc This method will set the canvas container size
-   *@param size
+   *@desc Group Method for Text Editor Canvas
    */
-  setCanvasContainerSize( size ) {
-     let container= document.getElementById('whiteboard-container');
-     container.setAttribute('size', size);
+  initializeTextEditor() {
+    this.wbContainer = document.getElementById('whiteboard-container');
+    this.tempCanvas = document.getElementById('tempCanvas');
+    this.tempContext = this.tempCanvas.getContext('2d');
+    this.textArea = document.getElementById('textTool');
+    this.tempTextContainer = document.getElementById('tempTextContainer');
+    this.listenTextEditorEvent();
+  }
+  listenTextEditorEvent() {
+    console.log("I listen to text editor");
+    this.textArea.addEventListener('mouseup', (e) =>{
+      this.mouse.click = false;
+        this.tempCanvas.removeEventListener('mousemove', ()=> {
+          this.mouse.click = false;
+        }, false);
+    }, false);
+    this.textArea.addEventListener('keypress',  (e) => {
+                let key = e.which || e.keyCode;
+                if (key === 13) { // 13 is enter
+                // code for enter
+                let newHeight = this.textArea.offsetHeight + 20;
+                this.textArea.style.height = newHeight + 'px';
+                }
+            });
+
+    this.tempCanvas.addEventListener('mouseup', (e)=> {
+      this.mouse.click = false;
+      this.tempCanvas.removeEventListener('mousemove', ()=> {
+        this.mouse.click = false;
+      }, false);
+      let lines = this.textArea.value.split('\n');
+      let processed_lines = [];
+      for (let i = 0; i < lines.length; i++) {
+          let chars = lines[i].length;
+          
+          for (let j = 0; j < chars; j++) {
+              let text_node = document.createTextNode(lines[i][j]);
+              this.tempTextContainer.appendChild(text_node);
+              
+              // Since tempTextContainer is not taking any space
+              // in layout due to display: none, we gotta
+              // make it take some space, while keeping it
+              // hidden/invisible and then get dimensions
+              this.tempTextContainer.style.position   = 'absolute';
+              this.tempTextContainer.style.visibility = 'hidden';
+              this.tempTextContainer.style.display    = 'block';
+              
+              let width = this.tempTextContainer.offsetWidth;
+              
+              this.tempTextContainer.style.position   = '';
+              this.tempTextContainer.style.visibility = '';
+              this.tempTextContainer.style.display    = 'none';
+              
+              if (width > parseInt(this.textArea.style.width)) {
+                  break;
+              }
+          }
+          
+          processed_lines.push(this.tempTextContainer.textContent);
+          this.tempTextContainer.innerHTML = '';
+      }
+
+      let textAreaComputedStyle = getComputedStyle(this.textArea);
+      let fontSize = textAreaComputedStyle.getPropertyValue('font-size');
+      let fontFamily = textAreaComputedStyle.getPropertyValue('font-family');
+      // this.tempContext.font = fontSize + ' ' + fontFamily;
+      
+      for (let n = 0; n < processed_lines.length; n++) {
+          let data :any = { eventType: "whiteboard-mytextarea"};
+          data.processed_line = processed_lines[n];
+          data.textarea_left = parseInt( this.textArea.style.left );
+          data.textarea_top = parseInt( this.textArea.style.top ) + n * parseInt( fontSize );
+          data.font_family = fontFamily;
+          data.text_baseline = 'top';
+          data.draw_mode = 't';
+          this.vc.myEvent.emit(data); 
+          // this.tempContext.fillText(
+          //     processed_line,
+          //     parseInt( this.textArea.style.left ),
+          //     parseInt( this.textArea.style.top ) + n * parseInt( fontSize ) 
+          // );
+          
+      }
+
+      // Clearing tmp canvas
+      this.tempContext.clearRect(0, 0, this.tempContext.width, this.tempContext.height);
+      
+      // clearInterval(sprayIntervalID);
+      this.textArea.style.display = 'none';
+      this.textArea.value = '';
+
+    }, false);
+    this.tempCanvas.addEventListener('mousemove', (e)=> {
+      console.log(this.mouse.click);
+      if( !this.mouse.click ) return;
+      this.mouse.x = typeof e.offsetX !== 'undefined' ? e.offsetX : e.layerX;
+      this.mouse.y = typeof e.offsetY !== 'undefined' ? e.offsetY : e.layerY;
+      this.displayTextEditor();
+    }, false);
+    this.tempCanvas.addEventListener('mousedown', (e)=> {
+        this.mouse.click = true;
+
+        this.mouse.x = typeof e.offsetX !== 'undefined' ? e.offsetX : e.layerX;
+        this.mouse.y = typeof e.offsetY !== 'undefined' ? e.offsetY : e.layerY;
+        
+        this.start_mouse.x = this.mouse.x;
+        this.start_mouse.y = this.mouse.y;
+    }, false);
+
+
+  }
+  displayTextEditor() {
+    // Tmp canvas is always cleared up before drawing.
+    try {
+    this.tempContext.clearRect(0, 0, this.tempContext.width, this.tempContext.height);
+
+    let x = Math.min( this.mouse.x, this.start_mouse.x );
+    let y = Math.min( this.mouse.y, this.start_mouse.y );
+    let width = Math.abs( this.mouse.x - this.start_mouse.x );
+    let height = Math.abs( this.mouse.y - this.start_mouse.y );
+    let newWidth = 150 + width;
+    let newHeight= 40 + height;
+    this.textArea.style.left = x + 'px';
+    this.textArea.style.top = y + 'px';
+    this.textArea.style.minWidth = "150" + 'px';
+    this.textArea.style.minHeight = "40" + 'px';
+    this.textArea.style.width = newWidth + 'px';
+    this.textArea.style.height = newHeight + 'px';
+    console.log("textArea:",this.textArea);
+    this.textArea.style.display = 'block';
+    }
+    catch(e) {
+      console.error(e);
+    }
+  }
+  hideTextArea() {
+    if( this.textArea)this.textArea.style.display = 'none';
   }
   /**
   *@desc This method will subscribe to all events
@@ -710,7 +880,8 @@ export class RoomComponent {
       this.setCanvasSize( this.wb.canvasWidth, this.wb.canvasHeight);
       this.wb.optionSizeCanvas = 'small';
       this.checkCanvasSize( 'small' );
-      if( data.image_url ) this.changeCanvasPhoto( data.image_url );  
+      if( data.image_url ) this.changeCanvasPhoto( data.image_url );
+      this.initializeTextEditor();  
     }, 100);
   }
   /**

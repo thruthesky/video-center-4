@@ -231,7 +231,7 @@ $color_pallete_5:#2e3035;
             position: relative;
             float: left;
             width: 33.33%;
-            height: 68px;
+            min-height: 68px;
             cursor:pointer;
             img {
                 padding: 2px;
@@ -267,68 +267,83 @@ $color_pallete_5:#2e3035;
         width: $whiteboard_large_width;
         height: $whiteboard_large_height;
     }
-}
-
-
-/*
-
-
-// => Wide
-@media all and ( min-width: $break_point ) {
-    .content {
-        #room-settings {
-            position: absolute;
-            width: 170px;
+    //Text Editor Canvas
+    canvas {
+        &[drawMode="e"] {
+            cursor: -webkit-grab;
         }
-        .left {
-            width: $left_width;
+        &[drawMode="l"] {
+            cursor:default;
         }
-        &[whiteboard="true"] {
-            #video-container {
-                .myself, .others {
-                    display: inline-block;
-                }
-            }
-            #whiteboard-container {
+    }
+    #tempCanvas {
+        z-index: 1;
+        position: relative;
+        &[drawMode="t"] {
+            cursor: text;
+            z-index: 101;
+        }
+        @media all and ( min-width: $break_point ) {
+            &[drawMode="t"] {
                 position: absolute;
-                z-index: 100;
-                top: 62px;
-                left: $left_width + 2px;
-                #group-button {
-                    display: block;
-                    .select-canvas-size {
-                        display: inline-block;
-                    }
-                }
+                left: 0px; right: 0;
+                bottom: 0; top: 0;
+                cursor: text;
+                z-index: 101;
+            }
+            &[drawMode="e"] {
+            z-index: 1;
+            }
+            &[drawMode="l"] {
+                z-index: 1;
             }
         }
-        &[whiteboard="false"] {
-            #video-container {
-                position: absolute;
-                z-index: 100;
-                top: 62px;
-                left: $left_width + 2px;
-                .myself, .others {
-                    display: inline-block;
-                    width: 50%;
-                    video {
-                        width: 100%;
-                    }
-                }
-            }
+        
+    }
+    #textTool {
+        display: none;
+        position: absolute;
+        border: 1px dashed #0777b4;
+        outline: 0;
+        background-color: rgba(0,0,0,0);
+        font: 8px Verdana;
+        overflow: hidden;
+        white-space: nowrap;
+        resize: both;
+        z-index: 102;
+        &[drawColor="#161515"] {
+            color: #161515;
+        }
+        &[drawColor="#57646B"] {
+            color: #57646B;
+        }
+        &[drawColor="#fff"] {
+            color: #fff;
+        }
+        &[drawColor="#D01B1B"] {
+            color: #D01B1B;
+        }
+        &[drawColor="#1DB73C"] {
+            color: #1DB73C;
+        }
+        &[drawColor="#2094D7"] {
+            color: #2094D7;
+        }
+       
+        &[drawSize="2"] {
+            font-size: 8px;
+        }
+        &[drawSize="4"] {
+            font-size: 16px;
+        }
+        &[drawSize="6"] {
+            font-size: 24px;
+        }
+        &[drawSize="8"] {
+            font-size: 32px;
+        }
+        &[drawSize="10"] {
+            font-size: 40px;
         }
     }
 }
-
-
-// module/component
-
-nav {
-    border-radius: 0;
-    background: #3ea5ff;
-}
-
-
-// theme
-
-*/
