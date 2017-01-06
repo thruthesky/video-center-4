@@ -667,76 +667,7 @@ export class RoomComponent {
                 this.textArea.style.height = newHeight + 'px';
                 }
             });
-
-    this.tempCanvas.addEventListener('mouseup', (e)=> {
-      this.mouse.click = false;
-      this.tempCanvas.removeEventListener('mousemove', ()=> {
-        this.mouse.click = false;
-      }, false);
-      let lines = this.textArea.value.split('\n');
-      let processed_lines = [];
-      for (let i = 0; i < lines.length; i++) {
-          let chars = lines[i].length;
-          
-          for (let j = 0; j < chars; j++) {
-              let text_node = document.createTextNode(lines[i][j]);
-              this.tempTextContainer.appendChild(text_node);
-              
-              // Since tempTextContainer is not taking any space
-              // in layout due to display: none, we gotta
-              // make it take some space, while keeping it
-              // hidden/invisible and then get dimensions
-              this.tempTextContainer.style.position   = 'absolute';
-              this.tempTextContainer.style.visibility = 'hidden';
-              this.tempTextContainer.style.display    = 'block';
-              
-              let width = this.tempTextContainer.offsetWidth;
-              
-              this.tempTextContainer.style.position   = '';
-              this.tempTextContainer.style.visibility = '';
-              this.tempTextContainer.style.display    = 'none';
-              
-              if (width > parseInt(this.textArea.style.width)) {
-                  break;
-              }
-          }
-          
-          processed_lines.push(this.tempTextContainer.textContent);
-          this.tempTextContainer.innerHTML = '';
-      }
-
-      let textAreaComputedStyle = getComputedStyle(this.textArea);
-      let fontSize = textAreaComputedStyle.getPropertyValue('font-size');
-      let fontFamily = textAreaComputedStyle.getPropertyValue('font-family');
-      // this.tempContext.font = fontSize + ' ' + fontFamily;
-      
-      for (let n = 0; n < processed_lines.length; n++) {
-          let data :any = { eventType: "whiteboard-mytextarea"};
-          data.processed_line = processed_lines[n];
-          data.textarea_left = parseInt( this.textArea.style.left );
-          data.textarea_top = parseInt( this.textArea.style.top ) + n * parseInt( fontSize );
-          data.font_family = fontFamily;
-          data.text_baseline = 'top';
-          data.draw_mode = 't';
-          this.vc.myEvent.emit(data); 
-          // this.tempContext.fillText(
-          //     processed_line,
-          //     parseInt( this.textArea.style.left ),
-          //     parseInt( this.textArea.style.top ) + n * parseInt( fontSize ) 
-          // );
-          
-      }
-
-      // Clearing tmp canvas
-      this.tempContext.clearRect(0, 0, this.tempContext.width, this.tempContext.height);
-      
-      // clearInterval(sprayIntervalID);
-      this.textArea.style.display = 'none';
-      this.textArea.value = '';
-
-    }, false);
     this.tempCanvas.addEventListener('mousemove', (e)=> {
-      console.log(this.mouse.click);
       if( !this.mouse.click ) return;
       this.mouse.x = typeof e.offsetX !== 'undefined' ? e.offsetX : e.layerX;
       this.mouse.y = typeof e.offsetY !== 'undefined' ? e.offsetY : e.layerY;
@@ -750,7 +681,74 @@ export class RoomComponent {
         
         this.start_mouse.x = this.mouse.x;
         this.start_mouse.y = this.mouse.y;
+    }, false);        
+    this.tempCanvas.addEventListener('mouseup', (e)=> {
+      this.mouse.click = false;
+      console.log(this.textArea.style.display);
+      if( this.textArea.style.display == "none"){
+        this.displayTextEditor();
+      }
+      else {
+        this.tempCanvas.removeEventListener('mousemove', ()=> {
+          this.mouse.click = false;
+        }, false);
+        let lines = this.textArea.value.split('\n');
+        let processed_lines = [];
+        for (let i = 0; i < lines.length; i++) {
+            let chars = lines[i].length;
+            
+            for (let j = 0; j < chars; j++) {
+                let text_node = document.createTextNode(lines[i][j]);
+                this.tempTextContainer.appendChild(text_node);
+                
+                // Since tempTextContainer is not taking any space
+                // in layout due to display: none, we gotta
+                // make it take some space, while keeping it
+                // hidden/invisible and then get dimensions
+                this.tempTextContainer.style.position   = 'absolute';
+                this.tempTextContainer.style.visibility = 'hidden';
+                this.tempTextContainer.style.display    = 'block';
+                
+                let width = this.tempTextContainer.offsetWidth;
+                
+                this.tempTextContainer.style.position   = '';
+                this.tempTextContainer.style.visibility = '';
+                this.tempTextContainer.style.display    = 'none';
+                
+                if (width > parseInt(this.textArea.style.width)) {
+                    break;
+                }
+            }
+            
+            processed_lines.push(this.tempTextContainer.textContent);
+            this.tempTextContainer.innerHTML = '';
+        }
+
+        let textAreaComputedStyle = getComputedStyle(this.textArea);
+        let fontSize = textAreaComputedStyle.getPropertyValue('font-size');
+        let fontFamily = textAreaComputedStyle.getPropertyValue('font-family');
+        // this.tempContext.font = fontSize + ' ' + fontFamily;
+        
+        for (let n = 0; n < processed_lines.length; n++) {
+            let data :any = { eventType: "whiteboard-mytextarea"};
+            data.processed_line = processed_lines[n];
+            data.textarea_left = parseInt( this.textArea.style.left );
+            data.textarea_top = parseInt( this.textArea.style.top ) + n * parseInt( fontSize );
+            data.font_family = fontFamily;
+            data.text_baseline = 'top';
+            data.draw_mode = 't';
+            this.vc.myEvent.emit(data); 
+        }
+
+        // Clearing tmp canvas
+        this.tempContext.clearRect(0, 0, this.tempContext.width, this.tempContext.height);
+        
+        // clearInterval(sprayIntervalID);
+        this.textArea.style.display = 'none';
+        this.textArea.value = '';
+      }
     }, false);
+    
 
 
   }
@@ -771,7 +769,6 @@ export class RoomComponent {
     this.textArea.style.minHeight = "40" + 'px';
     this.textArea.style.width = newWidth + 'px';
     this.textArea.style.height = newHeight + 'px';
-    console.log("textArea:",this.textArea);
     this.textArea.style.display = 'block';
     }
     catch(e) {

@@ -124,10 +124,10 @@
             </div>
             <canvas mycanvas id="mycanvas" [drawSize]="wb.optionDrawSize" [drawColor]="wb.optionDrawColor" [drawMode]="wb.optionDrawMode" [sizeCanvas]="wb.optionSizeCanvas"></canvas>
             <div id="group-button">
-                <button class="btn btn-info" (click)="onClickDrawMode()"><i class="fa fa-pencil" aria-hidden="true"></i> </button>  
-                <button class="btn btn-info" (click)="onClickEraseMode()"><i class="fa fa-eraser" aria-hidden="true"></i></button> 
-                <button class="btn btn-info" (click)="onClickTextMode()"><i class="fa fa-font" aria-hidden="true"></i> </button>
-                <button class="btn btn-info" (click)="onClickClear()"><i class="fa fa-square-o" aria-hidden="true"></i></button>
+                <button (click)="onClickDrawMode()"><i class="fa fa-pencil fa-inverse" aria-hidden="true"></i> </button>  
+                <button (click)="onClickEraseMode()"><i class="fa fa-eraser fa-inverse" aria-hidden="true"></i></button> 
+                <button (click)="onClickTextMode()"><i class="fa fa-font fa-inverse" aria-hidden="true"></i> </button>
+                <button (click)="onClickClear()"><i class="fa fa-square-o fa-inverse" aria-hidden="true"></i></button>
                 <select [(ngModel)]="wb.selectDrawColor" (ngModelChange)="wb.optionDrawColor = $event">
                     <option *ngFor="let color of wb.colors" value="{{ color.value }}" >{{color.text}}</option>
                 </select>
