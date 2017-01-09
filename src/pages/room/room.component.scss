@@ -276,42 +276,23 @@ $color_pallete_5:#2e3035;
         height: $whiteboard_large_height;
     }
     //Text Editor Canvas
-    canvas {
+    #mycanvas {
         &[drawMode="e"] {
-            cursor: -webkit-grab;
+            cursor: url("/assets/img/eraser.png"), auto;
         }
         &[drawMode="l"] {
-            cursor:default;
+            cursor: url("/assets/img/pen.png"), auto;
         }
-    }
-    #tempCanvas {
-        z-index: 1;
-        position: relative;
         &[drawMode="t"] {
             cursor: text;
-            z-index: 101;
         }
-        @media all and ( min-width: $break_point ) {
-            &[drawMode="t"] {
-                position: absolute;
-                left: 0px; right: 0;
-                bottom: 0; top: 0;
-                cursor: text;
-                z-index: 101;
-            }
-            &[drawMode="e"] {
-            z-index: 1;
-            }
-            &[drawMode="l"] {
-                z-index: 1;
-            }
-        }
-        
     }
+
     #textTool {
         display: none;
-        position: absolute;
+        margin-top: -34px;
         border: 1px dashed #0777b4;
+        position: relative;
         outline: 0;
         background-color: rgba(0,0,0,0);
         font: 8px Verdana;

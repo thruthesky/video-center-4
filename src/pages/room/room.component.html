@@ -120,10 +120,13 @@
         </aside>
 
         <div id="whiteboard-container" *ngIf="wb.whiteboardDisplay">
+            
             <div id="canvas-image">
             </div>
-            <canvas mycanvas id="mycanvas" [drawSize]="wb.optionDrawSize" [drawColor]="wb.optionDrawColor" [drawMode]="wb.optionDrawMode" [sizeCanvas]="wb.optionSizeCanvas"></canvas>
+            <canvas mycanvas id="mycanvas" [drawSize]="wb.optionDrawSize" [drawColor]="wb.optionDrawColor" [drawMode]="wb.optionDrawMode" [attr.drawMode]="wb.optionDrawMode" [sizeCanvas]="wb.optionSizeCanvas"></canvas>
+            
             <div id="group-button">
+                
                 <button (click)="onClickDrawMode()"><i class="fa fa-pencil fa-inverse" aria-hidden="true"></i> </button>  
                 <button (click)="onClickEraseMode()"><i class="fa fa-eraser fa-inverse" aria-hidden="true"></i></button> 
                 <button (click)="onClickTextMode()"><i class="fa fa-font fa-inverse" aria-hidden="true"></i> </button>
@@ -138,9 +141,9 @@
                     <option *ngFor="let csize of wb.sizeCanvas" value="{{ csize.value }}" >{{csize.text}}</option>
                 </select>
             </div>
-            <canvas id="tempCanvas" [attr.drawMode]="wb.optionDrawMode"  #tempCanvas></canvas>
-            <textarea id="textTool" #textTool [attr.drawColor]="wb.optionDrawColor" [attr.drawSize]="wb.optionDrawSize"></textarea>
+            
             <div id="tempTextContainer" style="display:none" #tempTextContainer></div>
+            <textarea id="textTool" #textTool [attr.drawColor]="wb.optionDrawColor" [attr.drawSize]="wb.optionDrawSize"></textarea>
         </div><!--/#whiteborad-container-->
         
 </section>

@@ -86,6 +86,7 @@ export class MycanvasDirective {
   *@param e, obj
   */    
   draw( e , obj) {
+    if( this.drawMode == 't') return;
     if ( ! e ) e = window.event;
     let mouseTouchXY = this.getMouseTouchXY( e );
     let elementXY = this.getElementXY( obj );

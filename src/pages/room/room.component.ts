@@ -607,7 +607,6 @@ export class RoomComponent {
       else if ( size == 'medium' ) { w = '480px'; h = '600px'; }
       else if ( size == 'large' ) {w = '640px';h = '800px';}
       this.setCanvasSize( w, h );
-      this.setTempCanvasSize( w, h );
       this.setCanvasContainerSize( size );
       this.getWhiteboardHistory( room );
   }
@@ -630,22 +629,13 @@ export class RoomComponent {
       container.setAttribute('size', size);
     }
 
-  /**
-    *@desc This method will set the temp canvas size
-    *@param width
-    *@param height
-    */
-  setTempCanvasSize( width, height ) {
-      let mycanvas= document.getElementById('tempCanvas');
-      mycanvas.setAttribute('width', width);
-      mycanvas.setAttribute('height', height);
-  }
+ 
   /**
    *@desc Group Method for Text Editor Canvas
    */
   initializeTextEditor() {
     this.wbContainer = document.getElementById('whiteboard-container');
-    this.tempCanvas = document.getElementById('tempCanvas');
+    this.tempCanvas = document.getElementById('mycanvas');
     this.tempContext = this.tempCanvas.getContext('2d');
     this.textArea = document.getElementById('textTool');
     this.tempTextContainer = document.getElementById('tempTextContainer');
@@ -654,26 +644,30 @@ export class RoomComponent {
   listenTextEditorEvent() {
     console.log("I listen to text editor");
     this.textArea.addEventListener('mouseup', (e) =>{
+      if( this.wb.optionDrawMode != 't') return;
       this.mouse.click = false;
         this.tempCanvas.removeEventListener('mousemove', ()=> {
           this.mouse.click = false;
         }, false);
     }, false);
     this.textArea.addEventListener('keypress',  (e) => {
-                let key = e.which || e.keyCode;
-                if (key === 13) { // 13 is enter
-                // code for enter
-                let newHeight = this.textArea.offsetHeight + 20;
-                this.textArea.style.height = newHeight + 'px';
-                }
-            });
+      if( this.wb.optionDrawMode != 't') return;
+      let key = e.which || e.keyCode;
+      if (key === 13) { // 13 is enter
+      // code for enter
+      let newHeight = this.textArea.offsetHeight + 20;
+      this.textArea.style.height = newHeight + 'px';
+      }
+    });
     this.tempCanvas.addEventListener('mousemove', (e)=> {
+      if( this.wb.optionDrawMode != 't') return;
       if( !this.mouse.click ) return;
       this.mouse.x = typeof e.offsetX !== 'undefined' ? e.offsetX : e.layerX;
       this.mouse.y = typeof e.offsetY !== 'undefined' ? e.offsetY : e.layerY;
       this.displayTextEditor();
     }, false);
     this.tempCanvas.addEventListener('mousedown', (e)=> {
+        if( this.wb.optionDrawMode != 't') return;
         this.mouse.click = true;
 
         this.mouse.x = typeof e.offsetX !== 'undefined' ? e.offsetX : e.layerX;
@@ -683,6 +677,7 @@ export class RoomComponent {
         this.start_mouse.y = this.mouse.y;
     }, false);        
     this.tempCanvas.addEventListener('mouseup', (e)=> {
+      if( this.wb.optionDrawMode != 't') return;
       this.mouse.click = false;
       console.log(this.textArea.style.display);
       if( this.textArea.style.display == "none"){
@@ -707,7 +702,7 @@ export class RoomComponent {
                 // hidden/invisible and then get dimensions
                 this.tempTextContainer.style.position   = 'absolute';
                 this.tempTextContainer.style.visibility = 'hidden';
-                this.tempTextContainer.style.display    = 'block';
+                this.tempTextContainer.style.display    = 'inline-block';
                 
                 let width = this.tempTextContainer.offsetWidth;
                 
@@ -756,9 +751,13 @@ export class RoomComponent {
     // Tmp canvas is always cleared up before drawing.
     try {
     this.tempContext.clearRect(0, 0, this.tempContext.width, this.tempContext.height);
-
+    // console.log('document: ',document.body.scrollTop);
+    let elementXY = this.getElementXY( this.tempCanvas );
+    console.log("Elesis:", elementXY);
     let x = Math.min( this.mouse.x, this.start_mouse.x );
     let y = Math.min( this.mouse.y, this.start_mouse.y );
+    // let x = Math.min( this.mouse.x, this.start_mouse.x ) + elementXY.e_posx;
+    // let y = Math.min( this.mouse.y, this.start_mouse.y ) + elementXY.e_posy;
     let width = Math.abs( this.mouse.x - this.start_mouse.x );
     let height = Math.abs( this.mouse.y - this.start_mouse.y );
     let newWidth = 150 + width;
@@ -769,7 +768,7 @@ export class RoomComponent {
     this.textArea.style.minHeight = "40" + 'px';
     this.textArea.style.width = newWidth + 'px';
     this.textArea.style.height = newHeight + 'px';
-    this.textArea.style.display = 'block';
+    this.textArea.style.display = 'inline-block';
     }
     catch(e) {
       console.error(e);
@@ -777,6 +776,21 @@ export class RoomComponent {
   }
   hideTextArea() {
     if( this.textArea)this.textArea.style.display = 'none';
+  }
+  /**
+  *@desc This method will get the element position
+  *by calculating the position of element and it's parent
+  *@param obj
+  */ 
+  getElementXY( obj ) {
+   let data = { e_posx:0, e_posy:0 };   
+    if ( obj.offsetParent){
+        do {
+            data.e_posx += obj.offsetLeft;
+            data.e_posy += obj.offsetTop;
+        } while ( obj = obj.offsetParent);
+    }
+    return data;
   }
   /**
   *@desc This method will subscribe to all events
