@@ -1,3 +1,4 @@
+/// <reference path="../../d.ts/msr.d.ts" />
 import { Component, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as xInterface from '../../app/app.interface';
@@ -16,6 +17,7 @@ export class RoomComponent {
   imageUrlPhoto: string; 
   canvasPhoto: string;
   connection:any;
+  mediaStreamRecorder: any;
   videos:any =[];
   audios: any = [];
   position: any = null;
@@ -36,7 +38,8 @@ export class RoomComponent {
   tempTextContainer: any;
   mouse: any = { click:false, x: 0, y: 0 };
   start_mouse: any = { x: 0, y: 0 };
-
+  
+  index:number =1;
   constructor( private router: Router,
     private routes: ActivatedRoute,
     private ngZone: NgZone,
@@ -297,6 +300,14 @@ export class RoomComponent {
       location.href= "/";
     });
   }
+  onClickStartRecord() {
+    console.log("Start Recording ...");
+    this.mediaStreamRecorder.start(1000 * 1500);
+  }
+  onClickStopRecord() {
+    console.log("Stop Recording");
+    this.mediaStreamRecorder.stop();
+  }
   /**
   *@desc This method will toggle the whiteboard
   *and get whiteboard history
@@ -354,8 +365,15 @@ export class RoomComponent {
   }
 
   addVideo(event, cls) {
+
     setTimeout( ()=> {
-      console.log("Event:",event);
+      this.mediaStreamRecorder = new MediaStreamRecorder(event.stream);
+      // Media Stream Recorder
+      this.mediaStreamRecorder.mimeType = 'video/webm';
+      this.mediaStreamRecorder.ondataavailable =  (blob) => {
+        let blobURL = URL.createObjectURL(blob);
+        console.log("My Record Link...",blobURL);
+      };
       let newDiv = document.createElement("div");
       let newVideo = event.mediaElement;
       let videoParent = document.getElementById('video-container');
@@ -379,6 +397,7 @@ export class RoomComponent {
         else videoParent.appendChild( newDiv );
       }
     }, 700);
+   
   }
   /**
   *@desc This method will change video device
@@ -642,7 +661,6 @@ export class RoomComponent {
     this.listenTextEditorEvent();
   }
   listenTextEditorEvent() {
-    console.log("I listen to text editor");
     this.textArea.addEventListener('mouseup', (e) =>{
       if( this.wb.optionDrawMode != 't') return;
       this.mouse.click = false;
@@ -679,7 +697,6 @@ export class RoomComponent {
     this.tempCanvas.addEventListener('mouseup', (e)=> {
       if( this.wb.optionDrawMode != 't') return;
       this.mouse.click = false;
-      console.log(this.textArea.style.display);
       if( this.textArea.style.display == "none"){
         this.displayTextEditor();
       }
@@ -702,7 +719,7 @@ export class RoomComponent {
                 // hidden/invisible and then get dimensions
                 this.tempTextContainer.style.position   = 'absolute';
                 this.tempTextContainer.style.visibility = 'hidden';
-                this.tempTextContainer.style.display    = 'inline-block';
+                this.tempTextContainer.style.display    = 'block';
                 
                 let width = this.tempTextContainer.offsetWidth;
                 
@@ -751,13 +768,8 @@ export class RoomComponent {
     // Tmp canvas is always cleared up before drawing.
     try {
     this.tempContext.clearRect(0, 0, this.tempContext.width, this.tempContext.height);
-    // console.log('document: ',document.body.scrollTop);
-    let elementXY = this.getElementXY( this.tempCanvas );
-    console.log("Elesis:", elementXY);
     let x = Math.min( this.mouse.x, this.start_mouse.x );
     let y = Math.min( this.mouse.y, this.start_mouse.y );
-    // let x = Math.min( this.mouse.x, this.start_mouse.x ) + elementXY.e_posx;
-    // let y = Math.min( this.mouse.y, this.start_mouse.y ) + elementXY.e_posy;
     let width = Math.abs( this.mouse.x - this.start_mouse.x );
     let height = Math.abs( this.mouse.y - this.start_mouse.y );
     let newWidth = 150 + width;
@@ -768,7 +780,7 @@ export class RoomComponent {
     this.textArea.style.minHeight = "40" + 'px';
     this.textArea.style.width = newWidth + 'px';
     this.textArea.style.height = newHeight + 'px';
-    this.textArea.style.display = 'inline-block';
+    this.textArea.style.display = 'block';
     }
     catch(e) {
       console.error(e);
@@ -777,21 +789,7 @@ export class RoomComponent {
   hideTextArea() {
     if( this.textArea)this.textArea.style.display = 'none';
   }
-  /**
-  *@desc This method will get the element position
-  *by calculating the position of element and it's parent
-  *@param obj
-  */ 
-  getElementXY( obj ) {
-   let data = { e_posx:0, e_posy:0 };   
-    if ( obj.offsetParent){
-        do {
-            data.e_posx += obj.offsetLeft;
-            data.e_posy += obj.offsetTop;
-        } while ( obj = obj.offsetParent);
-    }
-    return data;
-  }
+
   /**
   *@desc This method will subscribe to all events
   */

@@ -6,3 +6,4 @@ interface RTCMultiConnection {
     new():void;
     enumerateDevices( func: any ): any;
 }
+

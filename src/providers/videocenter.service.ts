@@ -1,4 +1,4 @@
-/// <reference path="rmc.d.ts" />
+/// <reference path="../d.ts/rmc.d.ts" />
 import { Injectable, EventEmitter } from '@angular/core';
 import { Md5 } from 'ts-md5/dist/md5';
 import { videoCenterServerUrl } from '../app/app.interface';
