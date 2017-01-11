@@ -1,4 +1,3 @@
-/// <reference path="../../d.ts/msr.d.ts" />
 import { Component, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as xInterface from '../../app/app.interface';
@@ -17,7 +16,6 @@ export class RoomComponent {
   imageUrlPhoto: string; 
   canvasPhoto: string;
   connection:any;
-  mediaStreamRecorder: any;
   videos:any =[];
   audios: any = [];
   position: any = null;
@@ -39,7 +37,6 @@ export class RoomComponent {
   mouse: any = { click:false, x: 0, y: 0 };
   start_mouse: any = { x: 0, y: 0 };
   
-  index:number =1;
   constructor( private router: Router,
     private routes: ActivatedRoute,
     private ngZone: NgZone,
@@ -300,14 +297,7 @@ export class RoomComponent {
       location.href= "/";
     });
   }
-  onClickStartRecord() {
-    console.log("Start Recording ...");
-    this.mediaStreamRecorder.start(1000 * 1500);
-  }
-  onClickStopRecord() {
-    console.log("Stop Recording");
-    this.mediaStreamRecorder.stop();
-  }
+
   /**
   *@desc This method will toggle the whiteboard
   *and get whiteboard history
@@ -367,13 +357,7 @@ export class RoomComponent {
   addVideo(event, cls) {
 
     setTimeout( ()=> {
-      this.mediaStreamRecorder = new MediaStreamRecorder(event.stream);
-      // Media Stream Recorder
-      this.mediaStreamRecorder.mimeType = 'video/webm';
-      this.mediaStreamRecorder.ondataavailable =  (blob) => {
-        let blobURL = URL.createObjectURL(blob);
-        console.log("My Record Link...",blobURL);
-      };
+   
       let newDiv = document.createElement("div");
       let newVideo = event.mediaElement;
       let videoParent = document.getElementById('video-container');

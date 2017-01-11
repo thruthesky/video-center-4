@@ -7,30 +7,18 @@
           <logo-component></logo-component>
         </div>
         <div class="nav-buttons col-xs-8 col-sm-8">
-        
             <span class="fa-stack fa-lg float-xs-right" (click)="onClickLobby()">
-              <i class="fa fa-circle fa-stack-2x"></i>
-              <i class="fa fa-sign-out fa-stack-1x fa-inverse"></i>
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-sign-out fa-stack-1x fa-inverse"></i>
             </span>
             <span class="fa-stack fa-lg float-xs-right" (click)="onClickMenu()">
-              <i class="fa fa-circle fa-stack-2x"></i>
-              <i class="fa fa-cog fa-stack-1x fa-inverse"></i>
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-cog fa-stack-1x fa-inverse"></i>
             </span>
             <span class="fa-stack fa-lg float-xs-right" (click)="onClickWhiteboard()">
-              <i class="fa fa-circle fa-stack-2x"></i>
-              <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-pencil-square-o fa-stack-1x fa-inverse"></i>
             </span>
-            
-            <span class="fa-stack fa-lg float-xs-right" (click)="onClickStopRecord()">
-              <i class="fa fa-circle fa-stack-2x"></i>
-              <i class="fa fa-stop fa-stack-1x fa-inverse"></i>
-            </span>
-
-            <span class="fa-stack fa-lg float-xs-right" (click)="onClickStartRecord()">
-              <i class="fa fa-circle fa-stack-2x"></i>
-              <i class="fa fa-play fa-stack-1x fa-inverse"></i>
-            </span>
-
         </div>
       </div>
     </div>
@@ -72,11 +60,11 @@
                         Device Settings
                         <i class="fa fa-close" (click)="show.deviceDisplay=!show.deviceDisplay"></i>
                     </div>
-                    <select [(ngModel)]="vs.selectAudio" (ngModelChange)="onChangeAudio($event)">
+                    <select class="custom-select" [(ngModel)]="vs.selectAudio" (ngModelChange)="onChangeAudio($event)">
                         <option value="">Select default Audio</option>
                         <option *ngFor="let audio of audios" value="{{ audio.value }}" >{{audio.text}}</option>
                     </select>
-                    <select [(ngModel)]="vs.selectVideo" (ngModelChange)="onChangeVideo($event)">
+                    <select class="custom-select" [(ngModel)]="vs.selectVideo" (ngModelChange)="onChangeVideo($event)">
                         <option value="">Select default Video</option>
                         <option *ngFor="let video of videos" value="{{ video.value }}" >{{video.text}}</option>
                     </select>
@@ -142,13 +130,13 @@
                 <button (click)="onClickEraseMode()"><i class="fa fa-eraser fa-inverse" aria-hidden="true"></i></button> 
                 <button (click)="onClickTextMode()"><i class="fa fa-font fa-inverse" aria-hidden="true"></i> </button>
                 <button (click)="onClickClear()"><i class="fa fa-square-o fa-inverse" aria-hidden="true"></i></button>
-                <select [(ngModel)]="wb.selectDrawColor" (ngModelChange)="wb.optionDrawColor = $event">
+                <select class="custom-select" [(ngModel)]="wb.selectDrawColor" (ngModelChange)="wb.optionDrawColor = $event">
                     <option *ngFor="let color of wb.colors" value="{{ color.value }}" >{{color.text}}</option>
                 </select>
-                <select [(ngModel)]="wb.selectDrawSize" (ngModelChange)="wb.optionDrawSize = $event">
+                <select class="custom-select" [(ngModel)]="wb.selectDrawSize" (ngModelChange)="wb.optionDrawSize = $event">
                     <option *ngFor="let size of wb.size" value="{{ size.value }}" >{{size.text}}</option>
                 </select>
-                <select class="select-canvas-size" [(ngModel)]="wb.selectSizeCanvas" (ngModelChange)="onChangeCanvasSize($event)">
+                <select class="custom-select select-canvas-size" [(ngModel)]="wb.selectSizeCanvas" (ngModelChange)="onChangeCanvasSize($event)">
                     <option *ngFor="let csize of wb.sizeCanvas" value="{{ csize.value }}" >{{csize.text}}</option>
                 </select>
             </div>

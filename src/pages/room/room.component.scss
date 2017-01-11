@@ -76,9 +76,15 @@ $color_pallete_5:#2e3035;
                 position: absolute;
                 top: 0;
                 left: $left_width + $gutter;
-                .select-canvas-size {
-                    display: inline-block;
-                }
+               
+                   #group-button {
+                        .select-canvas-size {
+                            display: inline-block;
+                        }
+                        .custom-select {
+                            min-width: 55px;
+                        }
+                    }
             }
             
             &[whiteboard="false"] {
@@ -216,6 +222,9 @@ $color_pallete_5:#2e3035;
         button:focus {
             outline: none;
             background-color: $color_pallete_2;
+        }
+        .custom-select {
+            min-width: 80px;
         }
     }
 }
