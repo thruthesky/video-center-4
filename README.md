@@ -11,6 +11,8 @@ Video Center Version 4
 
 
 * Segmenation fault error - Very serious critical error.
+* Remove all the console log.
+
 
 
 [vc4@fs vcs4]$ node center-4-server.js 
