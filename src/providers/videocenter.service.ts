@@ -53,7 +53,7 @@ export class VideocenterService {
     connection.getExternalIceServers = false;
     connection.iceServers = [];
     connection.iceServers.push({
-        urls: 'turn:videocenter.co.kr:3478',
+        urls: 'turn:video.withcenter.com:3478',
         username: 'test_username1',
         credential: 'test_password1'
     });

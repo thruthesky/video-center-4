@@ -2,7 +2,7 @@
  * @desc Groups of Url
  */
 
-export let videoCenterServerUrl:string = "https://videocenter.co.kr:9001/";
+export let videoCenterServerUrl:string = "https://video.withcenter.com:9001/";
 // export let videoCenterServerUrl:string = "http://localhost:9001/";
 
 /**
