@@ -76,8 +76,7 @@ $color_pallete_5:#2e3035;
                 position: absolute;
                 top: 0;
                 left: $left_width + $gutter;
-               
-                   #group-button {
+                #group-button {
                         .select-canvas-size {
                             display: inline-block;
                         }
@@ -236,6 +235,14 @@ $color_pallete_5:#2e3035;
     input {
         width: 100%;
         color: $color_pallete_3;
+    }
+    .delete-all {
+        width: 100%;
+        background-color: $color_pallete_1;
+        color: $color_pallete_3;
+        border: none;
+        cursor: pointer;
+        margin: .5em 0;
     }
     .file-uploaded {
         &:after {

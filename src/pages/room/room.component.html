@@ -101,6 +101,11 @@
                     Book
                     <i class="fa fa-close" (click)="show.bookDisplay=!show.bookDisplay"></i>
                 </div>
+                <button (click)="onClickDeleteAll()" class="delete-all">
+                    <span>
+                        <i class="fa fa-trash fa-inverse"></i>Delete All
+                    </span>
+                </button>
                 <input type="file" (change)="onChangeFile($event)">
                 <div *ngIf="position && file_progress">
                     <progress [value]="position" max="100"></progress>

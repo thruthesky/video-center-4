@@ -281,7 +281,14 @@ export class RoomComponent {
       this.inputMessage = ''; 
     });
   }
-  
+  /**
+  *@desc This method will show the settings in room
+  */
+  onClickDeleteAll() {
+    this.fileUploaded.forEach( (file:any)=> {
+      this.onDeleteAllFile(file);
+    });
+  }
   /**
   *@desc This method will show the settings in room
   */
@@ -550,6 +557,14 @@ export class RoomComponent {
   onClickDeleteFile( file: FILE_UPLOADED ) {
     let re = confirm("Do you want to delete?");
     if ( ! re ) return;
+    this.fileServer.delete( file, () => {
+      console.log("file deleted");
+      _.remove( this.fileUploaded, (v: FILE_UPLOADED) => v.url == file.url );
+    },
+    e => alert(e),
+    () => {}  );
+  }
+  onDeleteAllFile( file: FILE_UPLOADED ) {
     this.fileServer.delete( file, () => {
       console.log("file deleted");
       _.remove( this.fileUploaded, (v: FILE_UPLOADED) => v.url == file.url );
