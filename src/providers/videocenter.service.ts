@@ -57,6 +57,12 @@ export class VideocenterService {
         username: 'test_username1',
         credential: 'test_password1'
     });
+    connection.bandwidth = {
+        audio: 50,
+        video: 256,
+        data: 163840,
+        screen: 300
+    };
   }
   /**
    * @desc This Method will emit a protocol in the server
