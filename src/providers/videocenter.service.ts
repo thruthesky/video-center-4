@@ -52,11 +52,21 @@ export class VideocenterService {
     };
     connection.getExternalIceServers = false;
     connection.iceServers = [];
+    // connection.candidates = {
+    //   turns: true,
+    //   stun: false,
+    //   host: false
+    // };
     connection.iceServers.push({
-        urls: 'turn:video.withcenter.com:3478',
+        urls: 'turn:english.withcenter.com:3478',
         username: 'test_username1',
         credential: 'test_password1'
     });
+    // connection.iceServers.push({
+    //     urls: 'turn:video.withcenter.com:3478',
+    //     username: 'test_username1',
+    //     credential: 'test_password1'
+    // });
     connection.bandwidth = {
         audio: 50,
         video: 256,
