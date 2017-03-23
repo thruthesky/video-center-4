@@ -116,7 +116,7 @@ export class FileServer {
                 console.log("onProgressItem: ", per );
             }
             catch ( e ) {
-                console.error( progress );
+                console.error(  progress );
             }
         };
         this.uploader.onCompleteAll = () => {

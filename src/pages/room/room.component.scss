@@ -352,3 +352,12 @@ $color_pallete_5:#2e3035;
         }
     }
 }
+.error {
+    position: fixed;
+    z-index: 1;
+    top:5em;
+    left:0;
+    right:0;
+    margin:0 auto;
+    width: 30em;
+}

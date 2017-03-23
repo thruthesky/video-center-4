@@ -20,7 +20,7 @@ export class RoomComponent {
   audios: any = [];
   position: any = null;
   file_progress: any = null;
-  
+  errorMessage:string = null;
   listMessage: xInterface.MESSAGELIST = <xInterface.MESSAGELIST> {};
   wb: xInterface.WhiteboardSetting = xInterface.whiteboardSetting;
   vs: xInterface.VideoSetting = xInterface.videoSetting;
@@ -423,7 +423,8 @@ export class RoomComponent {
     
     if( videoOptionalLength && attachStreamsLength ) {
       if(this.connection.mediaConstraints.video.optional[0].sourceId === videoSourceId) {
-          alert('Selected video device is already selected.');
+          // alert('Selected video device is already selected.');
+          this.errorMessage = 'Selected video device is already selected.';
           result = 1;
       }
     }
@@ -473,7 +474,8 @@ export class RoomComponent {
     let audioOptionalLength = this.connection.mediaConstraints.audio.optional.length;
     if( audioOptionalLength && attachStreamsLength) {
       if(this.connection.mediaConstraints.audio.optional[0].sourceId === audioSourceId) {
-          alert('Selected audio device is already selected.');
+          // alert('Selected audio device is already selected.');
+          this.errorMessage = 'Selected audio device is already selected.';
           result = 1;
       }
     }
@@ -532,7 +534,9 @@ export class RoomComponent {
     },
     e => {
         this.file_progress = false;
-        alert(e);
+        console.log("GET error:",e);
+        this.errorMessage = e;
+        // alert(e);
     },
     code => {
       console.log("complete code: ", code);
@@ -900,7 +904,10 @@ export class RoomComponent {
       console.log("getUploadedFiles()");
       this.fileUploaded = fileUploaded;
     },
-    e => alert('failed to get uploaded files'),
+    e => {
+      // alert('failed to get uploaded files')
+      this.errorMessage = 'failed to get uploaded files';
+    },
     () => {} );
   }
   /**

@@ -1,5 +1,6 @@
 <div id="room-page">
   <header>
+    
   <nav class="navbar">
     <div class="container-fluid">
       <div class="row">
@@ -151,4 +152,10 @@
         </div><!--/#whiteborad-container-->
         
 </section>
+</div>
+<div class="error alert alert-danger" role="alert" *ngIf="errorMessage">
+    <button type="button" class="close" (click)="errorMessage=null">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    Error {{ errorMessage }}
 </div>
