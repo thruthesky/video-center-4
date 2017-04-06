@@ -93,15 +93,15 @@ $color_pallete_5:#2e3035;
                         z-index: 100;
                     }
                 }
-                .device-video {
-                    padding: $gutter;
-                    padding-left: $left_width + $gutter;
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    z-index: -1;
-                }
+                // .device-video {
+                //     padding: $gutter;
+                //     padding-left: $left_width + $gutter;
+                //     position: absolute;
+                //     top: 0;
+                //     left: 0;
+                //     right: 0;
+                //     z-index: -1;
+                // }
                 
             }
         }

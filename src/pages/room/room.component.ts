@@ -98,7 +98,7 @@ export class RoomComponent {
     this.vs.defaultVideo = false;
     this.inputMessage = '';
     if ( this.listMessage[0] === void 0 ) this.listMessage[0] = { messages: [] };
-    this.wb.whiteboardDisplay = false;
+    this.wb.whiteboardDisplay = true;// Update make the whiteboard small first
     this.wb.selectDrawSize = this.wb.size[0].value;
     this.wb.selectDrawColor = this.wb.colors[0].value;
     this.wb.selectSizeCanvas = this.wb.sizeCanvas[0].value;
@@ -121,6 +121,12 @@ export class RoomComponent {
   */
   ngOnInit() {
     this.setDefaultDevice();
+    //Update change the class size to small at first load
+    this.wb.optionSizeCanvas = 'small';
+    setTimeout(()=>{
+       this.checkCanvasSize( 'small' );
+    },1);
+   
   }
  
   /**
@@ -917,7 +923,4 @@ export class RoomComponent {
       this.ngZone.run(() => {
       });
   }
-    
-
-
 }
