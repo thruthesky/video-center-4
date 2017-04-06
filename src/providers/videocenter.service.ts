@@ -57,6 +57,17 @@ export class VideocenterService {
     //   stun: false,
     //   host: false
     // };
+    connection.mediaConstraints = {
+        audio: true,
+        video: {
+            mandatory: {
+                maxWidth: 1,
+                maxHeight: 1
+            },
+            optional: []
+        }
+    };
+
     connection.iceServers.push({
         urls: 'turn:english.withcenter.com:3478',
         username: 'test_username1',
@@ -67,6 +78,7 @@ export class VideocenterService {
     //     username: 'test_username1',
     //     credential: 'test_password1'
     // });
+    
     connection.bandwidth = {
         audio: 50,
         video: 256,
