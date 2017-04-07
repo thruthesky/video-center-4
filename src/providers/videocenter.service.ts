@@ -52,11 +52,7 @@ export class VideocenterService {
     };
     connection.getExternalIceServers = false;
     connection.iceServers = [];
-    // connection.candidates = {
-    //   turns: true,
-    //   stun: false,
-    //   host: false
-    // };
+    
     connection.mediaConstraints = {
         audio: true,
         video: {
@@ -73,6 +69,13 @@ export class VideocenterService {
         username: 'test_username1',
         credential: 'test_password1'
     });
+
+    connection.candidates = {
+      turn: true,
+      stun: false,
+      host: false
+    };
+    
     // connection.iceServers.push({
     //     urls: 'turn:video.withcenter.com:3478',
     //     username: 'test_username1',
