@@ -61,8 +61,8 @@ export class VideocenterService {
         audio: true,
         video: {
             mandatory: {
-                maxWidth: 1,
-                maxHeight: 1
+                maxWidth: 100,
+                maxHeight: 100
             },
             optional: []
         }
@@ -85,6 +85,7 @@ export class VideocenterService {
         data: 163840,
         screen: 300
     };
+
   }
   /**
    * @desc This Method will emit a protocol in the server
