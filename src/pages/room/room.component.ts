@@ -401,21 +401,28 @@ export class RoomComponent {
   *@param videoSourceId
   */
   onChangeVideo( videoSourceId ) {
-    if( this.vs.defaultVideo )  if(this.videoSelectedAlready( videoSourceId )) return;
-    localStorage.setItem('default-video', videoSourceId );
-    this.removeVideoTrackAndStream();
-    this.removeAudioTrackAndStream();
-    this.connection.mediaConstraints.video.optional = [{
-        sourceId: videoSourceId
-    }];
-    let video = document.getElementsByClassName('me')[0];
-    if(video) {
-      video.parentNode.removeChild( video );
-      this.connection.captureUserMedia( ()=> {
-        this.connection.renegotiate();
-      });
+    try {
+      if( this.vs.defaultVideo )  if(this.videoSelectedAlready( videoSourceId )) return;
+      localStorage.setItem('default-video', videoSourceId );
+      this.removeVideoTrackAndStream();
+      this.removeAudioTrackAndStream();
+      console.log("a",this.connection.mediaConstraints);
+      this.connection.mediaConstraints.video.optional = [{
+          sourceId: videoSourceId
+      }];
+      let video = document.getElementsByClassName('me')[0];
+      if(video) {
+        video.parentNode.removeChild( video );
+        this.connection.captureUserMedia( ()=> {
+          this.connection.renegotiate();
+        });
+      }
+      this.vs.defaultVideo = true;
     }
-    this.vs.defaultVideo = true;
+    catch(e) {
+      console.log(e);
+    }
+   
   }
   /**
   *@desc This method will check if video is already selected
@@ -423,18 +430,23 @@ export class RoomComponent {
   *@return result 
   */
   videoSelectedAlready( videoSourceId ) {
-    let result = 0;
-    let videoOptionalLength = this.connection.mediaConstraints.video.optional.length;
-    let attachStreamsLength = this.connection.attachStreams.length;
-    
-    if( videoOptionalLength && attachStreamsLength ) {
-      if(this.connection.mediaConstraints.video.optional[0].sourceId === videoSourceId) {
-          // alert('Selected video device is already selected.');
-          this.errorMessage = 'Selected video device is already selected.';
-          result = 1;
+    try {
+      let result = 0;
+      let videoOptionalLength = this.connection.mediaConstraints.video.optional.length;
+      let attachStreamsLength = this.connection.attachStreams.length;
+      
+      if( videoOptionalLength && attachStreamsLength ) {
+        if(this.connection.mediaConstraints.video.optional[0].sourceId === videoSourceId) {
+            // alert('Selected video device is already selected.');
+            this.errorMessage = 'Selected video device is already selected.';
+            result = 1;
+        }
       }
+      return result;
     }
-    return result;
+    catch(e) {
+      console.log(e);
+    }
   }
   /**
   *@desc This method will remove the track and stream of video
@@ -453,21 +465,33 @@ export class RoomComponent {
   *@param audioSourceId
   */
   onChangeAudio( audioSourceId ) {
-    if( this.vs.defaultAudio ) if(this.audioSelectedAlready( audioSourceId )) return;
-    localStorage.setItem('default-audio', audioSourceId );
-    this.removeAudioTrackAndStream();
-    this.removeVideoTrackAndStream();
-    this.connection.mediaConstraints.audio.optional = [{
-        sourceId: audioSourceId
-    }];
-    let video = document.getElementsByClassName('me')[0];
-    if(video) {
-      video.parentNode.removeChild( video );
-      this.connection.captureUserMedia( ()=> {
-        this.connection.renegotiate();
-      });
+    try {
+      if( this.vs.defaultAudio ) if(this.audioSelectedAlready( audioSourceId )) return;
+      localStorage.setItem('default-audio', audioSourceId );
+      this.removeAudioTrackAndStream();
+      this.removeVideoTrackAndStream();
+      if( typeof this.connection.mediaConstraints.audio === 'boolean' ) {
+        this.connection.mediaConstraints.audio = {};
+        this.connection.mediaConstraints.audio.optional = [{
+            sourceId: audioSourceId
+        }];
+      }
+      // this.connection.mediaConstraints.audio.optional = [{
+      //     sourceId: audioSourceId
+      // }];
+      let video = document.getElementsByClassName('me')[0];
+      if(video) {
+        video.parentNode.removeChild( video );
+        this.connection.captureUserMedia( ()=> {
+          this.connection.renegotiate();
+        });
+      }
+      this.vs.defaultAudio = true;
     }
-    this.vs.defaultAudio = true;
+    catch(e) {
+      console.log(e);
+    }
+    
   }
   /**
   *@desc This method will check if audio is already selected
@@ -475,17 +499,22 @@ export class RoomComponent {
   *@return result 
   */
   audioSelectedAlready( audioSourceId ) {
-    let result = 0;
-    let attachStreamsLength = this.connection.attachStreams.length;
-    let audioOptionalLength = this.connection.mediaConstraints.audio.optional.length;
-    if( audioOptionalLength && attachStreamsLength) {
-      if(this.connection.mediaConstraints.audio.optional[0].sourceId === audioSourceId) {
-          // alert('Selected audio device is already selected.');
-          this.errorMessage = 'Selected audio device is already selected.';
-          result = 1;
+    try {
+      let result = 0;
+      let attachStreamsLength = this.connection.attachStreams.length;
+      let audioOptionalLength = this.connection.mediaConstraints.audio.optional.length;
+      if( audioOptionalLength && attachStreamsLength) {
+        if(this.connection.mediaConstraints.audio.optional[0].sourceId === audioSourceId) {
+            this.errorMessage = 'Selected audio device is already selected.';
+            result = 1;
+        }
       }
+      return result;
     }
-    return result;
+    catch(e) {
+      console.log(e);
+    }
+  
   }
   /**
   *@desc This method will remove the track and stream of audio
