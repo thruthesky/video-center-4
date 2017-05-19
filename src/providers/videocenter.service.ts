@@ -41,28 +41,11 @@ export class VideocenterService {
   initializeConnection() {
     let connection: any = <any> VideocenterService.connection;
     connection.enableFileSharing = false;
-    connection.session = {
-        audio: true,
-        video: true,
-        data : false
-    };
-    connection.sdpConstraints.mandatory = {
-        OfferToReceiveAudio: true,
-        OfferToReceiveVideo: true
-    };
+    
     connection.getExternalIceServers = false;
     connection.iceServers = [];
     
-    connection.mediaConstraints = {
-        audio: true,
-        video: {
-            mandatory: {
-                maxWidth: 100,
-                maxHeight: 100
-            },
-            optional: []
-        }
-    };
+    
 
     connection.iceServers.push({
         urls: 'turn:english.withcenter.com:3478',
@@ -75,19 +58,58 @@ export class VideocenterService {
       stun: false,
       host: false
     };
-    
-    // connection.iceServers.push({
-    //     urls: 'turn:video.withcenter.com:3478',
-    //     username: 'test_username1',
-    //     credential: 'test_password1'
-    // });
-    
-    connection.bandwidth = {
-        audio: 50,
-        video: 256,
-        data: 163840,
-        screen: 300
+ 
+    connection.session = {
+        audio: true,
+        video: true,
+        data : false
     };
+    connection.sdpConstraints.mandatory = {
+        OfferToReceiveAudio: true,
+        OfferToReceiveVideo: true
+    };
+    connection.mediaConstraints = {
+        audio: true,
+        video: {
+            mandatory: {
+                minWidth: 200,
+                maxWidth: 200,
+                minHeight: 200,
+                maxHeight: 200
+            },
+            optional: []
+        }
+    };
+    connection.bandwidth = {
+        audio: 20,
+        video: 55,
+        data: 1000,
+        screen: 200
+    };
+    let BandwidthHandler = connection.BandwidthHandler;
+    connection.processSdp = (sdp) => {
+        sdp = BandwidthHandler.setApplicationSpecificBandwidth(sdp, connection.bandwidth, !!connection.session.screen);
+        sdp = BandwidthHandler.setVideoBitrates(sdp, {
+            min: connection.bandwidth.video,
+            max: connection.bandwidth.video
+        });
+
+        sdp = BandwidthHandler.setOpusAttributes(sdp);
+
+        sdp = BandwidthHandler.setOpusAttributes(sdp, {
+            'stereo': 1,
+            //'sprop-stereo': 1,
+            'maxaveragebitrate': connection.bandwidth.audio * 1000 * 8,
+            'maxplaybackrate': connection.bandwidth.audio * 1000 * 8,
+            //'cbr': 1,
+            //'useinbandfec': 1,
+            // 'usedtx': 1,
+            'maxptime': 3
+        });
+
+        return sdp;
+    };
+
 
   }
   /**
